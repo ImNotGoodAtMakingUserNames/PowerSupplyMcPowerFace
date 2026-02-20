@@ -3,7 +3,7 @@
 // TEST CONSTANTS
 bool PG_TEST_ENABLE = false;
 bool SYS_AC_VALS_TEST_ENABLE = false;
-bool ATX_RAIL_TELEM_TEST_ENABLE = false;
+bool ATX_RAIL_TELEM_TEST_ENABLE = true;
 bool SYS_PWR_OFF_TEST_ENABLE = false;
 
 
@@ -16,6 +16,13 @@ unsigned long PG_test_start_time = 0;
 unsigned long PG_test_trigger_time = 0;
 unsigned long PG_test_hook_time = 0;
 bool end_pg_test = false;
+
+
+//AC Vals test
+float P_act_val = 100;
+unsigned long AC_test_start_time = 0;
+unsigned long AC_sample_sec = 0;
+unsigned long AC_sample_count = 0;
 
 
 // SYS_PWR_OFF test
@@ -38,8 +45,7 @@ struct Rails {
 Rails RailVals = {12.0f, 5.0f, 3.3f}; 
 
 
-//AC Vals test
-float P_act_val = 100;
+
 
 
 // Pin assignments
@@ -58,8 +64,8 @@ float P_act_val = 100;
 #define INA_PWR_REG 0x03
 
 
-
 // ACS37800
+#define ACS_ADDR     0x50
 #define ACS_APWR_REG 0x21
 
 
@@ -88,6 +94,11 @@ void setup() {
   pinMode(PWR_BAD,  OUTPUT);
 
   Wire.begin(I2C_SDA,I2C_SCL);
+
+  if(SYS_AC_VALS_TEST_ENABLE){
+    Serial.print("Reading from register: 0x");
+    Serial.println(ACS_APWR_REG, HEX);
+  }
 
   if(SYS_PWR_OFF_TEST_ENABLE){
     Serial.println("The ATX rail values are being read at:");
@@ -264,6 +275,42 @@ void atx_vals_test(){
 
 void ac_vals_test(){
 
+  if(AC_test_start_time == 0){
+    AC_test_start_time = millis();
+  }
+
+  if(AC_sample_sec == 0){
+    AC_sample_sec = millis();
+    AC_sample_count = 0;
+  }
+
+  Wire.beginTransmission(ACS_ADDR);
+  Wire.write(ACS_APWR_REG);
+  Wire.requestFrom(ACS_APWR_REG,2);
+
+  if(Wire.endTransmission(false) == 2){
+    Serial.println("Power request successful, test values used in following logic");
+  }
+
+  AC_sample_count++;
+
+  if(millis() - AC_sample_sec  >= 1000){
+    Serial.print("sys_ac_vals read: ");
+    Serial.print(AC_sample_count);
+    Serial.println(" times in the last 1 second.");
+    AC_sample_sec = millis();
+    AC_sample_count = 0;
+
+    Serial.print("P_act_val:");
+    Serial.println(P_act_val);
+    P_act_val += 50;
+
+    AC_sample_sec = millis();
+    AC_sample_count = 0;
+
+  }
+
+
 }
 
 
@@ -282,8 +329,10 @@ void loop() {
     ac_vals_test();
   }
 
-  // check_PWR_GOOD();
-  // telem_data = get_telem();
+  if(ATX_RAIL_TELEM_TEST_ENABLE){
+
+    
+  }
   
 
 
