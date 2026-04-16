@@ -3,8 +3,8 @@
 // TEST CONSTANTS
 bool PG_TEST_ENABLE = false;
 bool SYS_AC_VALS_TEST_ENABLE = false;
-bool ATX_RAIL_TELEM_TEST_ENABLE = true;
-bool SYS_PWR_OFF_TEST_ENABLE = false;
+bool ATX_RAIL_TELEM_TEST_ENABLE = false;
+bool SYS_PWR_OFF_TEST_ENABLE = true;
 
 
 
@@ -44,9 +44,7 @@ struct Rails {
 
 Rails RailVals = {12.0f, 5.0f, 3.3f}; 
 
-
-
-
+int ATX_sample_count = 0;
 
 // Pin assignments
 #define I2C_SDA  8   // INPUT  Data pin
@@ -103,11 +101,20 @@ void setup() {
   if(SYS_PWR_OFF_TEST_ENABLE){
     Serial.println("The ATX rail values are being read at:");
     Serial.print("12V addr: ");
-    Serial.println(TELEM_V12_ADDR);
+    Serial.println(TELEM_V12_ADDR, HEX);
     Serial.print("5V addr: ");
-    Serial.println(TELEM_V5_ADDR);
+    Serial.println(TELEM_V5_ADDR, HEX);
     Serial.print("3V addr: ");
-    Serial.println(TELEM_V3_ADDR);
+    Serial.println(TELEM_V3_ADDR, HEX);
+
+    Serial.println("SYS_PWR_OFF_TEST_ENABLE. sys_pwr_off set to LOW");
+  }
+
+  if(ATX_RAIL_TELEM_TEST_ENABLE){
+    RailVals.v12 = 186;
+    RailVals.v5 = 89;
+    RailVals.v3 = 22;
+
   }
 
 }
@@ -211,12 +218,14 @@ void atx_vals_test(){
     delay(100);
     if (check_atx_rail_fault(RailVals.v12, RailVals.v5, RailVals.v3)){
       ATX_fault_trigger_time = micros();
-      Serial.println("ATX RAIL(S) +/- 5% OUT OF SPEC FOR 100ms, SHUTTING DOWN");
+      Serial.print("ATX RAIL(S) +/- 5% OUT OF SPEC FOR 100ms, pin 0x");
+      Serial.print(PWR_BAD, HEX);
+      Serial.println("set to HIGH, SHUTTING DOWN");
       digitalWrite(PWR_BAD, HIGH);
       ATX_fault_hook_time = micros();
       unsigned long resp_us = ATX_fault_hook_time - ATX_fault_trigger_time;
 
-      Serial.print("PWR_BAD set to HIGH in ");
+      Serial.print("PWR_BAD/sys_pwr_off set to HIGH in ");
       Serial.print(resp_us);
       Serial.println(" microsescond(s)");
 
@@ -289,7 +298,7 @@ void ac_vals_test(){
   Wire.requestFrom(ACS_APWR_REG,2);
 
   if(Wire.endTransmission(false) == 2){
-    Serial.println("Power request successful, test values used in following logic");
+    Serial.println("AC power request successful, test values used in following logic");
   }
 
   AC_sample_count++;
@@ -313,6 +322,55 @@ void ac_vals_test(){
 
 }
 
+void atx_pwr_test(){
+  if (ATX_sample_sec == 0){
+    ATX_sample_sec = millis();
+  }
+
+  Wire.beginTransmission(TELEM_V12_ADDR);
+  Wire.write(INA_PWR_REG);
+  Wire.endTransmission(false);
+  Wire.requestFrom(TELEM_V12_ADDR,2);
+  RailVals.v12 += 0.0001;
+
+
+  Wire.beginTransmission(TELEM_V5_ADDR);
+  Wire.write(INA_PWR_REG);
+  Wire.endTransmission(false);
+  Wire.requestFrom(TELEM_V5_ADDR,2);
+  RailVals.v5 += 0.0001;
+
+
+  Wire.beginTransmission(TELEM_V3_ADDR);
+  Wire.write(INA_PWR_REG);
+  Wire.endTransmission(false);
+  Wire.requestFrom(TELEM_V3_ADDR,2);
+  RailVals.v3 += 0.0001;
+
+
+
+  ATX_sample_count++;
+
+  if(millis() - ATX_sample_sec  >= 1000){
+    Serial.print("ATX rails power read: ");
+    Serial.print(ATX_sample_count);
+    Serial.println(" times in the last 1 second.");
+
+    Serial.print("12V:");
+    Serial.println(RailVals.v12);
+    Serial.print("5V:");
+    Serial.println(RailVals.v5);
+    Serial.print("3V:");
+    Serial.println(RailVals.v3);
+
+    ATX_sample_sec = millis();
+    ATX_sample_count = 0;
+
+  }
+
+
+}
+
 
 void loop() {
 
@@ -330,8 +388,8 @@ void loop() {
   }
 
   if(ATX_RAIL_TELEM_TEST_ENABLE){
+    atx_pwr_test();
 
-    
   }
   
 
