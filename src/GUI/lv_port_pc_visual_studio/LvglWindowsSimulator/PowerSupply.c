@@ -5,13 +5,19 @@
 #define VERT_RES 480
 #define HORI_RES 272
 
-
+/* Global text objects for live updates */
 lv_obj_t* live_update_text;
+static lv_obj_t* text_value_1;
+static lv_obj_t* text_value_2;
+static lv_obj_t* text_value_3;
 static lv_obj_t* sys_temp_scale;
 static lv_obj_t* V33_delta_scale;
-
 static lv_obj_t* screen;
 
+/* Example data that would be updated by your system */
+static float sensor_value_1 = 0.0f;
+static float sensor_value_2 = 0.0f;
+static float sensor_value_3 = 0.0f;
 
 static void ps_create_sys_temp_scale(void)
 {
@@ -35,11 +41,9 @@ static void ps_create_sys_temp_scale(void)
     static lv_style_t indicator_style;
     lv_style_init(&indicator_style);
 
-    /* Label style properties */
     lv_style_set_text_font(&indicator_style, LV_FONT_DEFAULT);
     lv_style_set_text_color(&indicator_style, lv_palette_darken(LV_PALETTE_BLUE, 3));
 
-    /* Major tick properties */
     lv_style_set_line_color(&indicator_style, lv_palette_darken(LV_PALETTE_BLUE, 3));
     lv_style_set_width(&indicator_style, 10U);      /*Tick length*/
     lv_style_set_line_width(&indicator_style, 2U);  /*Tick width*/
@@ -164,45 +168,72 @@ static void ps_create_V33_scale(void)
     lv_obj_set_style_pad_ver(V33_delta_scale, 5, LV_PART_INDICATOR);
 }
 
-static void ps_live_text_demo(void)
+static void ps_create_live_text_objects(void)
 {
-    live_update_text = lv_label_create(lv_screen_active());
-    lv_label_set_text(live_update_text, "Live Update Text");
-    lv_obj_set_style_text_color(live_update_text, lv_palette_darken(LV_PALETTE_BLUE, 3), 0);
-    lv_obj_set_style_text_font(live_update_text, LV_FONT_DEFAULT, 0);
-    lv_obj_align(live_update_text, LV_ALIGN_BOTTOM_MID, 0, -10);
+    /* Create three text labels for live updates */
+    text_value_1 = lv_label_create(lv_screen_active());
+    lv_label_set_text(text_value_1, "Value 1: 0.00");
+    lv_obj_set_style_text_color(text_value_1, lv_palette_darken(LV_PALETTE_BLUE, 3), 0);
+    lv_obj_set_style_text_font(text_value_1, LV_FONT_DEFAULT, 0);
+    lv_obj_set_pos(text_value_1, 10, 10);
+
+    text_value_2 = lv_label_create(lv_screen_active());
+    lv_label_set_text(text_value_2, "Value 2: 0.00");
+    lv_obj_set_style_text_color(text_value_2, lv_palette_darken(LV_PALETTE_GREEN, 3), 0);
+    lv_obj_set_style_text_font(text_value_2, LV_FONT_DEFAULT, 0);
+    lv_obj_set_pos(text_value_2, 10, 40);
+
+    text_value_3 = lv_label_create(lv_screen_active());
+    lv_label_set_text(text_value_3, "Value 3: 0.00");
+    lv_obj_set_style_text_color(text_value_3, lv_palette_darken(LV_PALETTE_RED, 3), 0);
+    lv_obj_set_style_text_font(text_value_3, LV_FONT_DEFAULT, 0);
+    lv_obj_set_pos(text_value_3, 10, 70);
 }
 
-void ps_update_time_text(void)
+void ps_update_live_text_values(void)
 {
-    static char time_buffer[32];
-    time_t current_time = time(NULL);
-    struct tm* time_info = localtime(&current_time);
-    
-    strftime(time_buffer, sizeof(time_buffer), "%H:%M:%S", time_info);
-    lv_label_set_text(live_update_text, time_buffer);
+    static char buffer[64];
+
+    /* Update text object 1 */
+    snprintf(buffer, sizeof(buffer), "Value 1: %.2f", sensor_value_1);
+    lv_label_set_text(text_value_1, buffer);
+
+    /* Update text object 2 */
+    snprintf(buffer, sizeof(buffer), "Value 2: %.2f", sensor_value_2);
+    lv_label_set_text(text_value_2, buffer);
+
+    /* Update text object 3 */
+    snprintf(buffer, sizeof(buffer), "Value 3: %.2f", sensor_value_3);
+    lv_label_set_text(text_value_3, buffer);
 }
 
 /* Timer callback function for live updates */
 static void ps_update_timer_callback(lv_timer_t* timer)
 {
     (void)timer; /* Unused parameter */
-    ps_update_time_text();
+    
+    /* Simulate sensor data updates (replace with actual sensor readings) */
+    sensor_value_1 += 0.1f;
+    sensor_value_2 += 0.2f;
+    sensor_value_3 += 0.15f;
+
+    ps_update_live_text_values();
 }
 
-void ps_gui(void) {
-    // Main Screen
+void ps_gui(void)
+{
+    /* Main Screen */
     lv_obj_set_style_bg_color(lv_screen_active(), lv_color_hex(0x000000), 0);
 
-    // Create sys_temp_scale display
+    /* Create sys_temp_scale display */
     //ps_create_sys_temp_scale();
 
-    // Create V33_delta_scale display
+    /* Create V33_delta_scale display */
     //ps_create_V33_scale();
 
-    ps_live_text_demo();
-    ps_update_time_text();
-    
-    /* Create a timer that calls ps_update_timer_callback every 1000ms (1 second) */
+    /* Create the three live-updating text objects */
+    ps_create_live_text_objects();
+
+    /* Create a timer that calls ps_update_timer_callback every 500ms */
     lv_timer_create(ps_update_timer_callback, 500, NULL);
 }

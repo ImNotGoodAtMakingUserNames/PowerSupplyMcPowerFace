@@ -7,11 +7,11 @@
       "RelativeMoniker": "D:0:0:{3CA6E070-4AC1-475E-BB17-CF29AE4806DF}|LvglWindowsSimulator\\LvglWindowsSimulator.vcxproj|solutionrelative:LvglWindowsSimulator\\PowerSupply.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files (x86)\\Windows Kits\\10\\Source\\10.0.26100.0\\ucrt\\string\\amd64\\strlen.asm||{8B382828-6202-11D1-8870-0000F87579D2}|"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{3CA6E070-4AC1-475E-BB17-CF29AE4806DF}|LvglWindowsSimulator\\LvglWindowsSimulator.vcxproj|C:\\Users\\Josiah\\Documents\\Senior Design\\Code\\PowerSupplyMcPowerFace\\src\\GUI\\lv_port_pc_visual_studio\\LvglWindowsSimulator\\PowerSupply.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{3CA6E070-4AC1-475E-BB17-CF29AE4806DF}|LvglWindowsSimulator\\LvglWindowsSimulator.vcxproj|solutionrelative:LvglWindowsSimulator\\PowerSupply.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files (x86)\\Windows Kits\\10\\Source\\10.0.26100.0\\ucrt\\string\\amd64\\strlen.asm||{8B382828-6202-11D1-8870-0000F87579D2}|"
     },
     {
       "AbsoluteMoniker": "D:0:0:{3CA6E070-4AC1-475E-BB17-CF29AE4806DF}|LvglWindowsSimulator\\LvglWindowsSimulator.vcxproj|C:\\Users\\Josiah\\Documents\\Senior Design\\Code\\PowerSupplyMcPowerFace\\src\\GUI\\lv_port_pc_visual_studio\\LvglPlatform\\lvgl\\demos\\widgets\\lv_demo_widgets_analytics.c||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
@@ -64,7 +64,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "strlen.asm",
               "DocumentMoniker": "C:\\Program Files (x86)\\Windows Kits\\10\\Source\\10.0.26100.0\\ucrt\\string\\amd64\\strlen.asm",
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\..\\..\\..\\Program Files (x86)\\Windows Kits\\10\\Source\\10.0.26100.0\\ucrt\\string\\amd64\\strlen.asm",
@@ -82,7 +82,7 @@
               "RelativeDocumentMoniker": "LvglWindowsSimulator\\PowerSupply.c",
               "ToolTip": "C:\\Users\\Josiah\\Documents\\Senior Design\\Code\\PowerSupplyMcPowerFace\\src\\GUI\\lv_port_pc_visual_studio\\LvglWindowsSimulator\\PowerSupply.c",
               "RelativeToolTip": "LvglWindowsSimulator\\PowerSupply.c",
-              "ViewState": "AgIAALUAAAAAAAAAAAAAAM4AAAAvAAAAAAAAAA==",
+              "ViewState": "AgIAALAAAAAAAAAAAAAiwMsAAAAaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
               "WhenOpened": "2026-04-16T22:21:14.965Z",
               "EditorCaption": ""
@@ -101,7 +101,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "PowerSupply.h",
               "DocumentMoniker": "C:\\Users\\Josiah\\Documents\\Senior Design\\Code\\PowerSupplyMcPowerFace\\src\\GUI\\lv_port_pc_visual_studio\\LvglWindowsSimulator\\PowerSupply.h",
               "RelativeDocumentMoniker": "LvglWindowsSimulator\\PowerSupply.h",
@@ -109,7 +109,8 @@
               "RelativeToolTip": "LvglWindowsSimulator\\PowerSupply.h",
               "ViewState": "AgIAAAAAAAAAAAAAAAApwAkAAAASAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000680|",
-              "WhenOpened": "2026-04-16T22:21:14.076Z"
+              "WhenOpened": "2026-04-16T22:21:14.076Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",

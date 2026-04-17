@@ -1,4 +1,4 @@
-﻿#ifndef POWER_SUPPLY_H
+#ifndef POWER_SUPPLY_H
 #define POWER_SUPPLY_H
 
 #include "../lvgl/lvgl.h"
@@ -8,7 +8,8 @@ extern "C" {
 #endif
 
 void ps_gui(void);
-extern lv_obj_t* live_update_text;
+void ps_update_live_text_values(void);
+void ps_set_values(float volts, float amps);
 
 #ifdef __cplusplus
 } /* extern "C" */
