@@ -106,11 +106,12 @@ static void ps_create_sys_temp_scale(void)
 static void V33_set_needle(int32_t value)
 {
     /* Scale geometry */
+    int32_t x_loc = lv_obj_get_x(V33_delta_scale) + 50;
+    int32_t y_loc = lv_obj_get_y(V33_delta_scale);
     int32_t scale_h = lv_obj_get_height(V33_delta_scale);
     int32_t range_min = 310;
     int32_t range_max = 350;
-    int32_t needle_w = 100;   /* how far the line extends to the right */
-    int32_t x_padding = 50;
+    int32_t needle_w = 35;   /* how far the line extends to the right */
 
     /* Map value → Y.  VERTICAL_LEFT: max is at top, min at bottom */
     int32_t y = scale_h - (int32_t)((int64_t)(value - range_min) * scale_h
@@ -121,10 +122,10 @@ static void V33_set_needle(int32_t value)
     if (y > scale_h) y = scale_h;
 
     static lv_point_precise_t pts[2];
-    pts[0].x = x_padding;
-    pts[0].y = y;
-    pts[1].x = needle_w + x_padding;
-    pts[1].y = y;
+    pts[0].x = x_loc;
+    pts[0].y = y_loc + y;
+    pts[1].x = x_loc + needle_w;
+    pts[1].y = y_loc + y;
 
     lv_line_set_points(v33_volt_needle, pts, 2);
 }
