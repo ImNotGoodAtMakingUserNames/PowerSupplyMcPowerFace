@@ -2,20 +2,55 @@
 #include <SPI.h>
 #include <Wire.h>
 #include <Adafruit_INA219.h>
+#include <ACS37800.h>
 #include <Arduino_GFX_Library.h>
-#include "touch.h"
 #include "PowerSupply.h"
 
 #define TFT_BL 2
+#define SDA_PIN 37
+#define SCL_PIN 38
 
-/* ---- INA219 ---- */
-Adafruit_INA219 inaA(0x40);
+// I2C addrs
+  // INA219's (DC Volt/Amp measure)
+  #define v12_ina219_adrr 0x40
+  #define v5_ina219_addr 0x41
+  #define v33_ina219_addr 0x44
+
+  // ACS37800 (AC Volt/Amp measure)
+  #define v120_acs37800_addr 0x60
+
+  // EMC2101 (PWM Fan Controller)
+  #define emc2101_addr 0x4c
+
+  // LM75A (Temp Sensor)
+  #define lm75a_addr  0x48
+
+
+/* ---- INA219's ---- */
+Adafruit_INA219 ina_v12(v12_ina219_adrr);
+Adafruit_INA219 ina_v5(v5_ina219_addr);
+Adafruit_INA219 ina_v33(v33_ina219_addr);
 
 const float SHUNT_MOHM = 50.0f;
 
 float getCurrent_mA(Adafruit_INA219 &ina) {
   return ina.getShuntVoltage_mV() / (SHUNT_MOHM / 1000.0f);
 }
+
+
+
+/* ---- ACS37800 ---- */
+
+
+
+
+/* ---- EMC2101 ---- */
+
+
+
+
+/* ---- LM75A ---- */
+
 
 /* ---- Display ---- */
 Arduino_ESP32RGBPanel *bus = new Arduino_ESP32RGBPanel(
@@ -33,49 +68,49 @@ Arduino_RPi_DPI_RGBPanel *lcd = new Arduino_RPi_DPI_RGBPanel(
   1, 7000000, true
 );
 
-/* ---- LVGL ---- */
-static const uint32_t SCR_W = 480;
-static const uint32_t SCR_H = 272;
-static lv_color_t buf1[SCR_W * 40];
-
-static void my_disp_flush(lv_display_t *disp, const lv_area_t *area, uint8_t *px_map) {
+void my_disp_flush(lv_display_t *disp, const lv_area_t *area, uint8_t *px_map) {
   uint32_t w = area->x2 - area->x1 + 1;
   uint32_t h = area->y2 - area->y1 + 1;
   lcd->draw16bitRGBBitmap(area->x1, area->y1, (uint16_t *)px_map, w, h);
   lv_display_flush_ready(disp);
 }
 
-static void my_touchpad_read(lv_indev_t *indev, lv_indev_data_t *data) {
-  if (touch_has_signal() && touch_touched()) {
-    data->state   = LV_INDEV_STATE_PRESSED;
-    data->point.x = touch_last_x;
-    data->point.y = touch_last_y;
-  } else {
-    data->state = LV_INDEV_STATE_RELEASED;
-  }
-}
+uint32_t my_tick(void) { return millis(); }
 
-static uint32_t my_tick(void) { return millis(); }
+
+/* ---- LVGL ---- */
+const uint32_t SCR_W = 480;
+const uint32_t SCR_H = 272;
+static lv_color_t buf1[SCR_W * 40];
+
 
 /* ---- Timing ---- */
 static unsigned long lastSensorRead = 0;
 const unsigned long SENSOR_INTERVAL_MS = 500;
 
 void setup() {
+  // Serial Viewer
   Serial.begin(115200);
   delay(500);
 
+  // I2C
+  Wire.begin(SDA_PIN, SCL_PIN);
+  if (!ina_v12.begin()) Serial.println("12V INA219 NOT FOUND");
+  if (!ina_v5.begin()) Serial.println("5V INA219 NOT FOUND");
+  if (!ina_v33.begin()) Serial.println("3.3V INA219 NOT FOUND");
+
+  ina_v12.setCalibration_32V_1A();
+  ina_v5.setCalibration_32V_1A();
+  ina_v33.setCalibration_32V_1A();
+
+
+
+  // Display & GUI
   pinMode(TFT_BL, OUTPUT);
   digitalWrite(TFT_BL, HIGH);
 
   lcd->begin();
   lcd->fillScreen(BLACK);
-
-  touch_init();
-
-  Wire.begin(37, 38);
-  if (!inaA.begin()) Serial.println("INA219 0x40 NOT FOUND");
-  inaA.setCalibration_32V_1A();
 
   lv_init();
   lv_tick_set_cb(my_tick);
@@ -86,22 +121,33 @@ void setup() {
 
   lv_indev_t *indev = lv_indev_create();
   lv_indev_set_type(indev, LV_INDEV_TYPE_POINTER);
-  lv_indev_set_read_cb(indev, my_touchpad_read);
 
+
+
+  // Initiate GUI
   ps_gui();
 }
 
 void loop() {
   unsigned long now = millis();
+
+  // 
   if (now - lastSensorRead >= SENSOR_INTERVAL_MS) {
     lastSensorRead = now;
 
-    float volts = inaA.getBusVoltage_V();
-    float amps  = getCurrent_mA(inaA) / 1000.0f;
+    float v12_rail_volts = ina_v12.getBusVoltage_V();
+    float v12_rail_milliamps  = getCurrent_mA(ina_v12) / 1000.0f;
 
-    ps_set_values(volts, amps);
+    float v5_rail_volts = ina_v5.getBusVoltage_V();
+    float v5_rail_milliamps  = getCurrent_mA(ina_v5) / 1000.0f;
 
-    Serial.printf("Voltage: %.3f V  |  Current: %.3f A\n", volts, amps);
+    float v33_rail_volts = ina_v33.getBusVoltage_V();
+    float v33_rail_milliamps  = getCurrent_mA(ina_v33) / 1000.0f;   
+
+
+    // ps_set_values(volts, amps); //Change for updated gui w/ multiple volt/amp values
+
+    // Serial.printf("Voltage: %.3f V  |  Current: %.3f A\n", volts, amps);
   }
 
   lv_timer_handler();

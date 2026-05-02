@@ -1,10 +1,10 @@
 ﻿#include "PowerSupply.h"
 #include <time.h>
 #include <stdio.h>
-#include <windows.h>
+#include <math.h>
 
 #define VERT_RES 480
-#define HORI_RES 272
+#define HORI_RES 800
 
 /* Global text objects for live updates */
 lv_obj_t* live_update_text;
@@ -26,7 +26,7 @@ static lv_obj_t* screen;
 static float sensor_value_1 = 0.0f;
 static float sensor_value_2 = 0.0f;
 static float sensor_value_3 = 0.0f;
-static float v33_volts = 0.0f;
+double v33_volts = 0.0;
 
 static void ps_create_sys_temp_scale(void)
 {
@@ -103,51 +103,61 @@ static void ps_create_sys_temp_scale(void)
     lv_scale_set_section_style_main(sys_temp_scale, section, &section_main_line_style);
 }
 
-static void V33_set_needle(int32_t value)
+static void V33_set_needle(double volt_val, int32_t scale_h, int32_t scale_w, int32_t scale_x_loc, int32_t scale_y_loc)
 {
+    /* Round to 2 decimal places to preserve values like 3.32, 3.37 */
+
     /* Scale geometry */
-    int32_t x_loc = lv_obj_get_x(V33_delta_scale) + 50;
-    int32_t y_loc = lv_obj_get_y(V33_delta_scale);
-    int32_t scale_h = lv_obj_get_height(V33_delta_scale);
-    int32_t range_min = 310;
-    int32_t range_max = 350;
+    int32_t x_loc = scale_x_loc + scale_w * 7/8;
+    int32_t y_loc = scale_y_loc + scale_h / 2;
+    double range_min = 3.10;
+    double range_max = 3.50;
     int32_t needle_w = 35;   /* how far the line extends to the right */
 
     /* Map value → Y.  VERTICAL_LEFT: max is at top, min at bottom */
-    int32_t y = scale_h - (int32_t)((int64_t)(value - range_min) * scale_h
-        / (range_max - range_min));
-
-    /* Clamp */
-    if (y < 0)       y = 0;
-    if (y > scale_h) y = scale_h;
+    if (round(volt_val) != 3.30) {
+        if (volt_val > 3.30) {
+            y_loc = (int32_t)(y_loc - (scale_h / 41)*(3.5 - volt_val)*100);
+        }
+        else if (volt_val < 3.30) {
+            y_loc = (int32_t)(y_loc + ((scale_h / 2) / 20) * (range_max - volt_val));
+        }
+    }
 
     static lv_point_precise_t pts[2];
     pts[0].x = x_loc;
-    pts[0].y = y_loc + y;
+    pts[0].y = y_loc;
     pts[1].x = x_loc + needle_w;
-    pts[1].y = y_loc + y;
+    pts[1].y = y_loc;
 
     lv_line_set_points(v33_volt_needle, pts, 2);
 }
 
-static void ps_update_v33_needle_callback(lv_timer_t* timer)
-{
-    (void)timer; /* Unused parameter */
-
-    if (v33_volts == 354) {
-        v33_volts = 312;
-    }
-    v33_volts++;
-    V33_set_needle(v33_volts);
-}
+//static void ps_update_v33_needle_callback(lv_timer_t* timer, int32_t scale_h)
+//{
+//    (void)timer; /* Unused parameter */
+//
+//    if (v33_volts >= 3.54f) {
+//        v33_volts = 3.12f;
+//    }
+//    v33_volts += 0.01f;
+//    V33_set_needle(v33_volts, scale_h);
+//}
 
 static void ps_create_V33_scale(void)
 {
+    int32_t scale_w = 60;
+    int32_t scale_h = 200;
+    int32_t x_loc = HORI_RES / 2 - scale_w / 2; // Center
+    int32_t y_loc = VERT_RES / 2 - scale_h / 2; // Center
+
     V33_delta_scale = lv_scale_create(lv_screen_active());
-    lv_obj_set_size(V33_delta_scale, 60, 200);
+    lv_obj_set_size(V33_delta_scale, scale_w, scale_h);
     lv_scale_set_label_show(V33_delta_scale, true);
     lv_scale_set_mode(V33_delta_scale, LV_SCALE_MODE_VERTICAL_LEFT);
-    lv_obj_center(V33_delta_scale);
+    //lv_obj_center(V33_delta_scale);
+    lv_obj_set_x(V33_delta_scale, x_loc);
+    lv_obj_set_y(V33_delta_scale, y_loc);
 
     lv_scale_set_total_tick_count(V33_delta_scale, 41);
     lv_scale_set_major_tick_every(V33_delta_scale, 10);
@@ -176,22 +186,16 @@ static void ps_create_V33_scale(void)
     lv_style_set_line_width(&minor_ticks_style, 2U);    /*Tick width*/
     lv_obj_add_style(V33_delta_scale, &minor_ticks_style, LV_PART_ITEMS);
 
-    //v33_volt_needle = lv_line_create(V33_delta_scale);
-    //lv_obj_set_style_line_color(v33_volt_needle, lv_palette_darken(LV_PALETTE_PURPLE, 1), LV_PART_MAIN);
-    //lv_obj_set_style_line_width(v33_volt_needle, 6, LV_PART_MAIN);
-    //lv_obj_set_style_line_rounded(v33_volt_needle, true, LV_PART_MAIN);
-    //lv_scale_set_line_needle_value(V33_delta_scale, v33_volt_needle, 100, 330);
-
     /* Create needle as a child of SCREEN, not the scale */
     v33_volt_needle = lv_line_create(lv_screen_active());  // Changed from V33_delta_scale
     lv_obj_set_style_line_color(v33_volt_needle, lv_palette_darken(LV_PALETTE_PURPLE, 1), LV_PART_MAIN);
     lv_obj_set_style_line_width(v33_volt_needle, 3, LV_PART_MAIN);
     lv_obj_set_style_line_rounded(v33_volt_needle, true, LV_PART_MAIN);
 
-    v33_volts = 330;
-    V33_set_needle(v33_volts);
+    v33_volts = 3.32;
+    V33_set_needle(v33_volts, scale_h, scale_w, x_loc, y_loc);
 
-    lv_timer_create(ps_update_v33_needle_callback, 200, NULL);
+    //lv_timer_create(ps_update_v33_needle_callback, 200, NULL);
 
 
 }
@@ -259,7 +263,6 @@ void ps_gui(void)
 
     /* Create V33_delta_scale display */
     ps_create_V33_scale();
-    lv_timer_create(ps_update_v33_needle_callback, 200, NULL);
 
     /* Create the three live-updating text objects */
     //ps_create_live_text_objects();
