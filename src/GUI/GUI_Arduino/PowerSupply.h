@@ -8,8 +8,11 @@ extern "C" {
 #endif
 
 void ps_gui(void);
-void ps_update_live_text_values(void);
-void ps_set_values(float volts, float amps);
+extern lv_obj_t* live_update_text;
+void ps_set_values(float v12v, float v12a,
+                   float v5v,  float v5a,
+                   float v33v, float v33a,
+                   float ac_w, float temp_c);
 
 #ifdef __cplusplus
 } /* extern "C" */

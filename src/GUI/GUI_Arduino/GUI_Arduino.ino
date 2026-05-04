@@ -5,9 +5,9 @@
 #include <Adafruit_EMC2101.h>
 #include <ACS37800.h>
 #include <Arduino_GFX_Library.h>
-#include <M2M_LM75A.h>
+#include <DFRobot_DHT20.h>
 #include "PowerSupply.h"
-#include "telem_vals.cpp"
+#include "telemetry.cpp"
 
 #define TFT_BL 2
 #define SDA_PIN 37
@@ -25,8 +25,8 @@
   // EMC2101 (PWM Fan Controller)
   #define emc2101_addr 0x4c       //Library defaults to this, here for debugging
 
-  // LM75A (Temp Sensor)
-  #define lm75a_addr  0x48
+  // DHT20 (Temp Sensor)
+  #define dht20_addr  0x38
 
 
 /* ---- INA219's ---- */
@@ -48,8 +48,8 @@ ACS37800 acs;
 /* ---- EMC2101 ---- */
 Adafruit_EMC2101 emc;
 
-/* ---- LM75A ---- */
-M2M_LM75A lm75a;
+/* ---- DHT20 ---- */
+DFRobot_DHT20 dft;
 
 /* ---- Display ---- */
 Arduino_ESP32RGBPanel *bus = new Arduino_ESP32RGBPanel(
@@ -91,15 +91,22 @@ void setup() {
   // Serial Viewer
   Serial.begin(115200);
   delay(500);
+  
 
   // I2C
   Wire.begin(SDA_PIN, SCL_PIN);
-  if (!ina_v12.begin()) Serial.println("12V INA219 NOT FOUND");
-  if (!ina_v5.begin()) Serial.println("5V INA219 NOT FOUND");
-  if (!ina_v33.begin()) Serial.println("3.3V INA219 NOT FOUND");
-  if (!emc.begin()) Serial.println("EMC2101 (Fan Controller) NOT FOUND");
-  lm75a.begin();
-  if (lm75a.isShutdown()) Serial.println("LMA75A (Temp Sensor) SHUT DOWN OR NOT FOUND");
+  Serial.println("Wire initiated");
+
+  delay(2000);
+
+  Wire.beginTransmission(0x60); if(Wire.endTransmission()){Serial.println("ACS37800 NOT FOUND");} else{Serial.println("ACS37800 CONNECTED");}
+  if (!ina_v12.begin()){ Serial.println("12V INA219 NOT FOUND");} else Serial.println("12V INA219 CONNECTED");
+  if (!ina_v5.begin()){ Serial.println("5V INA219 NOT FOUND");} else Serial.println("5V INA219 CONNECTED") ;
+  if (!ina_v33.begin()){ Serial.println("3.3V INA219 NOT FOUND");} else Serial.println("3.3V INA219 CONNECTED");
+  if (!emc.begin()){ Serial.println("EMC2101 (Fan Controller) NOT FOUND");} else Serial.println("EMC2101 (Fan Controller) CONNECTED");
+  if (dft.begin()){ Serial.println("DHT20 (Temp Sensor) NOT FOUND");} else Serial.println("DHT20 (Temp Sensor) CONNECTED");
+
+  Serial.println("I2C devices initiated");
 
   // INA setup
   ina_v12.setCalibration_32V_1A();
@@ -148,25 +155,33 @@ void loop() {
 
     // DC Rail power values
     float v12_rail_volts = ina_v12.getBusVoltage_V();
-    float v12_rail_milliamps  = getCurrent_mA(ina_v12) / 1000.0f;
+    float v12_rail_amps  = getCurrent_mA(ina_v12) / 1000.0f;
 
     float v5_rail_volts = ina_v5.getBusVoltage_V();
-    float v5_rail_milliamps  = getCurrent_mA(ina_v5) / 1000.0f;
+    float v5_rail_amps  = getCurrent_mA(ina_v5) / 1000.0f;
 
     float v33_rail_volts = ina_v33.getBusVoltage_V();
-    float v33_rail_milliamps  = getCurrent_mA(ina_v33) / 1000.0f;   
+    float v33_rail_amps  = getCurrent_mA(ina_v33) / 1000.0f;   
 
     // AC input power value
     acs.readActiveAndReactivePower();
-    int32_t v120_active_power_milliwatts = acs.activePowerMilliwatts;
+    int32_t ac_watts = acs.activePowerMilliwatts / 1000.f;
 
     // Temp sensor value
+    float temp_c              = dft.getTemperature(); // Add this — was missing
 
+    // Push everything to the GUI
+    ps_set_values(v12_rail_volts, v12_rail_amps,
+                  v5_rail_volts,  v5_rail_amps,
+                  v33_rail_volts, v33_rail_amps,
+                  ac_watts,       temp_c);
 
+    Serial.printf("--- 12V: %.3fV %.3fA | 5V: %.3fV %.3fA | 3.3V: %.3fV %.3fA | AC: %.2fW | Temp: %.1f°C ---\n",
+                  v12_rail_volts, v12_rail_amps,
+                  v5_rail_volts,  v5_rail_amps,
+                  v33_rail_volts, v33_rail_amps,
+                  ac_watts, temp_c);
 
-    // ps_set_values(volts, amps); //Change for updated gui w/ multiple volt/amp values
-
-    // Serial.printf("Voltage: %.3f V  |  Current: %.3f A\n", volts, amps);
   }
 
   lv_timer_handler();
