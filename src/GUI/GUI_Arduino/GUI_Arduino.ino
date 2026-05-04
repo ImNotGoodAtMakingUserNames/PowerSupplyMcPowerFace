@@ -2,9 +2,12 @@
 #include <SPI.h>
 #include <Wire.h>
 #include <Adafruit_INA219.h>
+#include <Adafruit_EMC2101.h>
 #include <ACS37800.h>
 #include <Arduino_GFX_Library.h>
+#include <M2M_LM75A.h>
 #include "PowerSupply.h"
+#include "telem_vals.cpp"
 
 #define TFT_BL 2
 #define SDA_PIN 37
@@ -17,10 +20,10 @@
   #define v33_ina219_addr 0x44
 
   // ACS37800 (AC Volt/Amp measure)
-  #define v120_acs37800_addr 0x60
+  #define v120_acs37800_addr 0x60  //Library defaults to this, here for debugging
 
   // EMC2101 (PWM Fan Controller)
-  #define emc2101_addr 0x4c
+  #define emc2101_addr 0x4c       //Library defaults to this, here for debugging
 
   // LM75A (Temp Sensor)
   #define lm75a_addr  0x48
@@ -40,17 +43,13 @@ float getCurrent_mA(Adafruit_INA219 &ina) {
 
 
 /* ---- ACS37800 ---- */
-
-
-
+ACS37800 acs;
 
 /* ---- EMC2101 ---- */
-
-
-
+Adafruit_EMC2101 emc;
 
 /* ---- LM75A ---- */
-
+M2M_LM75A lm75a;
 
 /* ---- Display ---- */
 Arduino_ESP32RGBPanel *bus = new Arduino_ESP32RGBPanel(
@@ -98,11 +97,23 @@ void setup() {
   if (!ina_v12.begin()) Serial.println("12V INA219 NOT FOUND");
   if (!ina_v5.begin()) Serial.println("5V INA219 NOT FOUND");
   if (!ina_v33.begin()) Serial.println("3.3V INA219 NOT FOUND");
+  if (!emc.begin()) Serial.println("EMC2101 (Fan Controller) NOT FOUND");
+  lm75a.begin();
+  if (lm75a.isShutdown()) Serial.println("LMA75A (Temp Sensor) SHUT DOWN OR NOT FOUND");
 
+  // INA setup
   ina_v12.setCalibration_32V_1A();
   ina_v5.setCalibration_32V_1A();
   ina_v33.setCalibration_32V_1A();
 
+  // ACS setup
+  acs.setBoardPololu(4); //4k-ohm test res for 120V RMS
+  acs.setSampleCount(0); //0 for each zero-crossing value, otherwise 4-1023 samples
+
+  // EMC setup
+  emc.enableTachInput(true);
+  emc.setPWMDivisor(0);
+  emc.setDutyCycle(50);
 
 
   // Display & GUI
@@ -135,6 +146,7 @@ void loop() {
   if (now - lastSensorRead >= SENSOR_INTERVAL_MS) {
     lastSensorRead = now;
 
+    // DC Rail power values
     float v12_rail_volts = ina_v12.getBusVoltage_V();
     float v12_rail_milliamps  = getCurrent_mA(ina_v12) / 1000.0f;
 
@@ -143,6 +155,13 @@ void loop() {
 
     float v33_rail_volts = ina_v33.getBusVoltage_V();
     float v33_rail_milliamps  = getCurrent_mA(ina_v33) / 1000.0f;   
+
+    // AC input power value
+    acs.readActiveAndReactivePower();
+    int32_t v120_active_power_milliwatts = acs.activePowerMilliwatts;
+
+    // Temp sensor value
+
 
 
     // ps_set_values(volts, amps); //Change for updated gui w/ multiple volt/amp values
