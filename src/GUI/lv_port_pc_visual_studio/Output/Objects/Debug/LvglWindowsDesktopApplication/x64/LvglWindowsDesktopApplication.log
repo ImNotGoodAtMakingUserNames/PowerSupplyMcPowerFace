@@ -1,1 +1,995 @@
-﻿
+﻿C:\Program Files\Microsoft Visual Studio\18\Community\MSBuild\Microsoft\VC\v180\Microsoft.CppBuild.targets(1142,5): warning MSB8027: Two or more files with the name of vg_lite_matrix.c will produce outputs to the same location. This can lead to an incorrect build result.  The files involved are C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglWindowsDesktopApplication\..\LvglPlatform\lvgl\src\libs\vg_lite_driver\VGLite\vg_lite_matrix.c, C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglWindowsDesktopApplication\..\LvglPlatform\lvgl\src\others\vg_lite_tvg\vg_lite_matrix.c.
+  img_benchmark_avatar.c
+  img_benchmark_lvgl_logo_argb.c
+  img_benchmark_lvgl_logo_rgb.c
+  lv_font_benchmark_montserrat_12_aligned.c
+  lv_font_benchmark_montserrat_14_aligned.c
+  lv_font_benchmark_montserrat_16_aligned.c
+  lv_font_benchmark_montserrat_18_aligned.c
+  lv_font_benchmark_montserrat_20_aligned.c
+  lv_font_benchmark_montserrat_24_aligned.c
+  lv_font_benchmark_montserrat_26_aligned.c
+  lv_demo_benchmark.c
+  lv_demo_gltf.c
+  lv_demo_keypad_encoder.c
+  lv_demos.c
+  img_lv_demo_music_btn_corner_large.c
+  img_lv_demo_music_btn_list_pause.c
+  img_lv_demo_music_btn_list_pause_large.c
+  img_lv_demo_music_btn_list_play.c
+  img_lv_demo_music_btn_list_play_large.c
+  img_lv_demo_music_btn_loop.c
+  img_lv_demo_music_btn_loop_large.c
+  img_lv_demo_music_btn_next.c
+  img_lv_demo_music_btn_next_large.c
+  img_lv_demo_music_btn_pause.c
+  img_lv_demo_music_btn_pause_large.c
+  img_lv_demo_music_btn_play.c
+  img_lv_demo_music_btn_play_large.c
+  img_lv_demo_music_btn_prev.c
+  img_lv_demo_music_btn_prev_large.c
+  img_lv_demo_music_btn_rnd.c
+  img_lv_demo_music_btn_rnd_large.c
+  img_lv_demo_music_corner_left.c
+  img_lv_demo_music_corner_left_large.c
+  img_lv_demo_music_corner_right.c
+  img_lv_demo_music_corner_right_large.c
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\demos\benchmark\lv_demo_benchmark.c(573,42): warning C4267: 'function': conversion from 'size_t' to 'uint32_t', possible loss of data
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\demos\benchmark\lv_demo_benchmark.c(576,46): warning C4267: 'function': conversion from 'size_t' to 'uint32_t', possible loss of data
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\demos\benchmark\lv_demo_benchmark.c(577,46): warning C4267: 'function': conversion from 'size_t' to 'uint32_t', possible loss of data
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\demos\benchmark\lv_demo_benchmark.c(578,46): warning C4267: 'function': conversion from 'size_t' to 'uint32_t', possible loss of data
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\demos\benchmark\lv_demo_benchmark.c(582,50): warning C4267: 'function': conversion from 'size_t' to 'uint32_t', possible loss of data
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\demos\benchmark\lv_demo_benchmark.c(583,50): warning C4267: 'function': conversion from 'size_t' to 'uint32_t', possible loss of data
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\demos\benchmark\lv_demo_benchmark.c(588,50): warning C4267: 'function': conversion from 'size_t' to 'uint32_t', possible loss of data
+  img_lv_demo_music_cover_1.c
+  img_lv_demo_music_cover_1_large.c
+  img_lv_demo_music_cover_2.c
+  img_lv_demo_music_cover_2_large.c
+  img_lv_demo_music_cover_3.c
+  img_lv_demo_music_cover_3_large.c
+  img_lv_demo_music_icon_1.c
+  img_lv_demo_music_icon_1_large.c
+  img_lv_demo_music_icon_2.c
+  img_lv_demo_music_icon_2_large.c
+  img_lv_demo_music_icon_3.c
+  img_lv_demo_music_icon_3_large.c
+  img_lv_demo_music_icon_4.c
+  img_lv_demo_music_icon_4_large.c
+  img_lv_demo_music_list_border.c
+  img_lv_demo_music_list_border_large.c
+  img_lv_demo_music_logo.c
+  img_lv_demo_music_slider_knob.c
+  img_lv_demo_music_slider_knob_large.c
+  img_lv_demo_music_wave_bottom.c
+  img_lv_demo_music_wave_bottom_large.c
+  img_lv_demo_music_wave_top.c
+  img_lv_demo_music_wave_top_large.c
+  lv_demo_music.c
+  lv_demo_music_list.c
+  lv_demo_music_main.c
+  img_render_arc_bg.c
+  img_render_lvgl_logo_argb8888.c
+  img_render_lvgl_logo_argb8888_premultiplied.c
+  img_render_lvgl_logo_i1.c
+  img_render_lvgl_logo_l8.c
+  img_render_lvgl_logo_rgb565.c
+  img_render_lvgl_logo_rgb565a8.c
+  img_render_lvgl_logo_rgb565_swapped.c
+  img_render_lvgl_logo_rgb888.c
+  img_render_lvgl_logo_xrgb8888.c
+  lv_demo_render.c
+  lv_demo_stress.c
+  img_demo_vector_avatar.c
+  lv_demo_vector_graphic.c
+  img_clothes.c
+  img_demo_widgets_avatar.c
+  img_demo_widgets_needle.c
+  img_lvgl_logo.c
+  lv_demo_widgets.c
+  lv_demo_widgets_analytics.c
+  lv_demo_widgets_components.c
+  lv_demo_widgets_profile.c
+  lv_demo_widgets_shop.c
+  lv_example_anim_1.c
+  lv_example_anim_2.c
+  lv_example_anim_3.c
+  lv_example_anim_4.c
+  lv_example_anim_timeline_1.c
+  animimg001.c
+  animimg002.c
+  animimg003.c
+  img_emoji_F617.c
+  imgbtn_left.c
+  imgbtn_mid.c
+  imgbtn_right.c
+  img_caret_down.c
+  img_cogwheel_argb.c
+  img_cogwheel_indexed16.c
+  img_cogwheel_rgb.c
+  img_hand.c
+  img_skew_strip.c
+  img_star.c
+  img_svg_img.c
+  lv_example_event_bubble.c
+  lv_example_event_button.c
+  lv_example_event_click.c
+  lv_example_event_draw.c
+  lv_example_event_streak.c
+  lv_example_event_trickle.c
+  lv_example_get_started_1.c
+  lv_example_get_started_2.c
+  lv_example_get_started_3.c
+  lv_example_get_started_4.c
+  lv_example_grad_1.c
+  lv_example_grad_2.c
+  lv_example_grad_3.c
+  lv_example_grad_4.c
+  lv_example_flex_1.c
+  lv_example_flex_2.c
+  lv_example_flex_3.c
+  lv_example_flex_4.c
+  lv_example_flex_5.c
+  lv_example_flex_6.c
+  lv_example_grid_1.c
+  lv_example_grid_2.c
+  lv_example_grid_3.c
+  lv_example_grid_4.c
+  lv_example_grid_5.c
+  lv_example_grid_6.c
+  lv_example_barcode_1.c
+  lv_example_bmp_1.c
+  lv_example_ffmpeg_1.c
+  lv_example_ffmpeg_2.c
+  lv_example_freetype_1.c
+  lv_example_freetype_2.c
+  lv_example_freetype_3.c
+  img_bulb_gif.c
+  lv_example_gif_1.c
+  lv_example_gltf_1.c
+  lv_example_gltf_2.c
+  lv_example_gstreamer_1.c
+  lv_example_libjpeg_turbo_1.c
+  img_png_demo.c
+  lv_example_libpng_1.c
+  img_wink_png.c
+  lv_example_lodepng_1.c
+  lv_example_qrcode_1.c
+  lv_example_rlottie_1.c
+  lv_example_rlottie_2.c
+  lv_example_rlottie_approve.c
+  lv_example_svg_1.c
+  lv_example_svg_2.c
+  lv_example_svg_3.c
+  lv_example_tiny_ttf_1.c
+  lv_example_tiny_ttf_2.c
+  lv_example_tiny_ttf_3.c
+  ubuntu_font.c
+  lv_example_tjpgd_1.c
+  lv_example_file_explorer_1.c
+  lv_example_file_explorer_2.c
+  lv_example_file_explorer_3.c
+  lv_example_font_manager_1.c
+  lv_example_font_manager_2.c
+  lv_example_font_manager_3.c
+  lv_example_fragment_1.c
+  lv_example_fragment_2.c
+  lv_example_gestures.c
+  lv_example_gridnav_1.c
+  lv_example_gridnav_2.c
+  lv_example_gridnav_3.c
+  lv_example_gridnav_4.c
+  lv_example_gridnav_5.c
+  lv_example_ime_pinyin_1.c
+  lv_example_ime_pinyin_2.c
+  lv_example_imgfont_1.c
+  lv_example_monkey_1.c
+  lv_example_monkey_2.c
+  lv_example_monkey_3.c
+  lv_example_observer_1.c
+  lv_example_observer_2.c
+  lv_example_observer_3.c
+  lv_example_observer_4.c
+  lv_example_observer_5.c
+  lv_example_observer_6.c
+  lv_example_observer_7.c
+  lv_example_snapshot_1.c
+  lv_example_translation_1.c
+  lv_example_translation_2.c
+  lv_example_xml_1.c
+  lv_example_xml_2.c
+  lv_port_disp_template.c
+  lv_port_fs_template.c
+  lv_port_indev_template.c
+  lv_port_lcd_stm32_template.c
+  lv_example_osal.c
+  lv_example_scroll_1.c
+  lv_example_scroll_2.c
+  lv_example_scroll_3.c
+  lv_example_scroll_4.c
+  lv_example_scroll_5.c
+  lv_example_scroll_6.c
+  lv_example_scroll_7.c
+  lv_example_scroll_8.c
+  lv_example_style_1.c
+  lv_example_style_10.c
+  lv_example_style_11.c
+  lv_example_style_12.c
+  lv_example_style_13.c
+  lv_example_style_14.c
+  lv_example_style_15.c
+  lv_example_style_16.c
+  lv_example_style_17.c
+  lv_example_style_18.c
+  lv_example_style_19.c
+  lv_example_style_2.c
+  lv_example_style_3.c
+  lv_example_style_4.c
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\examples\scroll\lv_example_scroll_4.c(31,54): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\examples\scroll\lv_example_scroll_4.c(64,62): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+  lv_example_style_5.c
+  lv_example_style_6.c
+  lv_example_style_7.c
+  lv_example_style_8.c
+  lv_example_style_9.c
+  lv_example_animimg_1.c
+  lv_example_arclabel_1.c
+  lv_example_arc_1.c
+  lv_example_arc_2.c
+  lv_example_arc_3.c
+  lv_example_bar_1.c
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\examples\styles\lv_example_style_13.c(24,62): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+  lv_example_bar_2.c
+  lv_example_bar_3.c
+  lv_example_bar_4.c
+  lv_example_bar_5.c
+  lv_example_bar_6.c
+  lv_example_bar_7.c
+  lv_example_buttonmatrix_1.c
+  lv_example_buttonmatrix_2.c
+  lv_example_buttonmatrix_3.c
+  lv_example_button_1.c
+  lv_example_button_2.c
+  lv_example_button_3.c
+  lv_example_calendar_1.c
+  lv_example_calendar_2.c
+  lv_example_canvas_1.c
+  lv_example_canvas_10.c
+  lv_example_canvas_11.c
+  lv_example_canvas_2.c
+  lv_example_canvas_3.c
+  lv_example_canvas_4.c
+  lv_example_canvas_5.c
+  lv_example_canvas_6.c
+  lv_example_canvas_7.c
+  lv_example_canvas_8.c
+  lv_example_canvas_9.c
+  lv_example_chart_1.c
+  lv_example_chart_2.c
+  lv_example_chart_3.c
+  lv_example_chart_4.c
+  lv_example_chart_5.c
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\examples\widgets\canvas\lv_example_canvas_10.c(11,32): warning C4267: 'initializing': conversion from 'size_t' to 'const int16_t', possible loss of data
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\examples\widgets\canvas\lv_example_canvas_11.c(11,32): warning C4267: 'initializing': conversion from 'size_t' to 'const int16_t', possible loss of data
+  lv_example_chart_6.c
+  lv_example_chart_7.c
+  lv_example_chart_8.c
+  lv_example_checkbox_1.c
+  lv_example_checkbox_2.c
+  lv_example_dropdown_1.c
+  lv_example_dropdown_2.c
+  lv_example_dropdown_3.c
+  lv_example_imagebutton_1.c
+  lv_example_image_1.c
+  lv_example_image_2.c
+  lv_example_image_3.c
+  lv_example_image_4.c
+  lv_example_image_5.c
+  lv_example_keyboard_1.c
+  lv_example_keyboard_2.c
+  lv_example_keyboard_3.c
+  lv_example_label_1.c
+  lv_example_label_2.c
+  lv_example_label_3.c
+  lv_example_label_4.c
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\examples\widgets\checkbox\lv_example_checkbox_2.c(33,63): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+  lv_example_label_5.c
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\examples\widgets\dropdown\lv_example_dropdown_3.c(35,75): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+  lv_example_label_6.c
+  lv_example_label_7.c
+  lv_example_led_1.c
+  lv_example_line_1.c
+  lv_example_list_1.c
+  lv_example_list_2.c
+  lv_example_lottie_1.c
+  lv_example_lottie_2.c
+  lv_example_lottie_approve.c
+  lv_example_menu_1.c
+  lv_example_menu_2.c
+  lv_example_menu_3.c
+  lv_example_menu_4.c
+  lv_example_menu_5.c
+  lv_example_msgbox_1.c
+  lv_example_msgbox_2.c
+  lv_example_obj_1.c
+  lv_example_obj_2.c
+  lv_example_obj_3.c
+  lv_example_roller_1.c
+  lv_example_roller_2.c
+  lv_example_roller_3.c
+  lv_example_scale_1.c
+  lv_example_scale_10.c
+  lv_example_scale_11.c
+  lv_example_scale_12.c
+  lv_example_scale_2.c
+  lv_example_scale_3.c
+  lv_example_scale_4.c
+  lv_example_scale_5.c
+  lv_example_scale_6.c
+  lv_example_scale_7.c
+  lv_example_scale_8.c
+  lv_example_scale_9.c
+  lv_example_slider_1.c
+  lv_example_slider_2.c
+  lv_example_slider_3.c
+  lv_example_slider_4.c
+  lv_example_span_1.c
+  lv_example_spinbox_1.c
+  lv_example_spinner_1.c
+  lv_example_switch_1.c
+  lv_example_switch_2.c
+  lv_example_table_1.c
+  lv_example_table_2.c
+  lv_example_tabview_1.c
+  lv_example_tabview_2.c
+  lv_example_textarea_1.c
+  lv_example_textarea_2.c
+  lv_example_textarea_3.c
+  lv_example_textarea_4.c
+  lv_example_tileview_1.c
+  lv_example_win_1.c
+  lv_group.c
+  lv_obj.c
+  lv_obj_class.c
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\examples\widgets\slider\lv_example_slider_2.c(48,70): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\examples\widgets\slider\lv_example_slider_2.c(50,65): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+  lv_obj_draw.c
+  lv_obj_event.c
+  lv_obj_id_builtin.c
+  lv_obj_pos.c
+  lv_obj_property.c
+  lv_obj_scroll.c
+  lv_obj_style.c
+  lv_obj_style_gen.c
+  lv_obj_tree.c
+  lv_refr.c
+  lv_display.c
+  lv_draw_buf_convert_helium.c
+  lv_draw_buf_convert.c
+  lv_draw_buf_convert_neon.c
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\examples\widgets\table\lv_example_table_2.c(80,52): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+  lv_draw_dma2d.c
+  lv_draw_dma2d_fill.c
+  lv_draw_dma2d_img.c
+  lv_draw_ppa.c
+  lv_draw_ppa_buf.c
+  lv_draw_ppa_fill.c
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\examples\widgets\tabview\lv_example_tabview_2.c(32,81): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+  lv_draw_ppa_img.c
+  lv_draw_eve.c
+  lv_draw_eve_arc.c
+  lv_draw_eve_fill.c
+  lv_draw_eve_image.c
+  lv_draw_eve_letter.c
+  lv_draw_eve_line.c
+  lv_draw_eve_ram_g.c
+  lv_draw_eve_triangle.c
+  lv_eve.c
+  lv_draw.c
+  lv_draw_3d.c
+  lv_draw_arc.c
+  lv_draw_buf.c
+  lv_draw_image.c
+  lv_draw_label.c
+  lv_draw_line.c
+  lv_draw_mask.c
+  lv_draw_rect.c
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\examples\widgets\textarea\lv_example_textarea_4.c(12,55): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+  lv_draw_triangle.c
+  lv_draw_vector.c
+  lv_image_decoder.c
+  lv_draw_nema_gfx.c
+  lv_draw_nema_gfx_arc.c
+  lv_draw_nema_gfx_border.c
+  lv_draw_nema_gfx_fill.c
+  lv_draw_nema_gfx_img.c
+  lv_draw_nema_gfx_label.c
+  lv_draw_nema_gfx_layer.c
+  lv_draw_nema_gfx_line.c
+  lv_draw_nema_gfx_stm32_hal.c
+  lv_draw_nema_gfx_triangle.c
+  lv_draw_nema_gfx_utils.c
+  lv_draw_nema_gfx_vector.c
+  lv_nema_gfx_path.c
+  lv_draw_buf_g2d.c
+  lv_draw_g2d.c
+  lv_draw_g2d_fill.c
+  lv_draw_g2d_img.c
+  lv_g2d_buf_map.c
+  lv_g2d_utils.c
+  lv_draw_buf_pxp.c
+  lv_draw_pxp.c
+  lv_draw_pxp_fill.c
+  lv_draw_pxp_img.c
+  lv_draw_pxp_layer.c
+  lv_pxp_cfg.c
+  lv_pxp_osa.c
+  lv_pxp_utils.c
+  lv_draw_opengles.c
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\core\lv_obj_style.c(250,48): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+  lv_draw_dave2d.c
+  lv_draw_dave2d_arc.c
+  lv_draw_dave2d_border.c
+  lv_draw_dave2d_fill.c
+  lv_draw_dave2d_image.c
+  lv_draw_dave2d_label.c
+  lv_draw_dave2d_line.c
+  lv_draw_dave2d_mask_rectangle.c
+  lv_draw_dave2d_triangle.c
+  lv_draw_dave2d_utils.c
+  lv_draw_sdl.c
+  lv_draw_sw_blend.c
+  lv_draw_sw_blend_to_al88.c
+  lv_draw_sw_blend_to_argb8888.c
+  lv_draw_sw_blend_to_argb8888_premultiplied.c
+  lv_draw_sw_blend_to_i1.c
+  lv_draw_sw_blend_to_l8.c
+  lv_draw_sw_blend_to_rgb565.c
+  lv_draw_sw_blend_to_rgb565_swapped.c
+  lv_draw_sw_blend_to_rgb888.c
+  lv_draw_sw_blend_neon_to_rgb565.c
+  lv_draw_sw_blend_neon_to_rgb888.c
+  lv_draw_sw.c
+  lv_draw_sw_arc.c
+  lv_draw_sw_border.c
+  lv_draw_sw_box_shadow.c
+  lv_draw_sw_fill.c
+  lv_draw_sw_grad.c
+  lv_draw_sw_img.c
+  lv_draw_sw_letter.c
+  lv_draw_sw_line.c
+  lv_draw_sw_mask.c
+  lv_draw_sw_mask_rect.c
+  lv_draw_sw_transform.c
+  lv_draw_sw_triangle.c
+  lv_draw_sw_utils.c
+  lv_draw_sw_vector.c
+  lv_draw_buf_vg_lite.c
+  lv_draw_vg_lite.c
+  lv_draw_vg_lite_arc.c
+  lv_draw_vg_lite_border.c
+  lv_draw_vg_lite_box_shadow.c
+  lv_draw_vg_lite_fill.c
+  lv_draw_vg_lite_img.c
+  lv_draw_vg_lite_label.c
+  lv_draw_vg_lite_layer.c
+  lv_draw_vg_lite_line.c
+  lv_draw_vg_lite_mask_rect.c
+  lv_draw_vg_lite_triangle.c
+  lv_draw_vg_lite_vector.c
+  lv_vg_lite_decoder.c
+  lv_vg_lite_grad.c
+  lv_vg_lite_math.c
+  lv_vg_lite_path.c
+  lv_vg_lite_pending.c
+  lv_vg_lite_stroke.c
+  lv_vg_lite_utils.c
+  lv_linux_drm.c
+  lv_linux_drm_common.c
+  lv_linux_drm_egl.c
+  lv_linux_fbdev.c
+  lv_ft81x.c
+  lv_ili9341.c
+  lv_lcd_generic_mipi.c
+  lv_nv3007.c
+  lv_nxp_elcdif.c
+  lv_renesas_glcdc.c
+  lv_st7735.c
+  lv_st7789.c
+  lv_st7796.c
+  lv_st_ltdc.c
+  lv_draw_eve_display.c
+  lv_evdev.c
+  lv_libinput.c
+  lv_xkb.c
+  lv_nuttx_cache.c
+  lv_nuttx_entry.c
+  lv_nuttx_fbdev.c
+  lv_nuttx_image_cache.c
+  lv_nuttx_lcd.c
+  lv_nuttx_libuv.c
+  lv_nuttx_mouse.c
+  lv_nuttx_profiler.c
+  lv_nuttx_touchscreen.c
+  lv_opengles_shader.c
+  egl.c
+  gles2.c
+  lv_opengles_debug.c
+  lv_opengles_driver.c
+  lv_opengles_egl.c
+  lv_opengles_glfw.c
+  lv_opengles_texture.c
+  lv_opengl_shader_manager.c
+  lv_opengl_shader_program.c
+  lv_qnx.c
+  lv_sdl_keyboard.c
+  lv_sdl_mouse.c
+  lv_sdl_mousewheel.c
+  lv_sdl_window.c
+  lv_uefi_context.c
+  lv_uefi_display.c
+  lv_uefi_indev_keyboard.c
+  lv_uefi_indev_pointer.c
+  lv_uefi_indev_touch.c
+  lv_uefi_private.c
+  lv_wayland.c
+  lv_wayland_smm.c
+  lv_wl_cache.c
+  lv_wl_dmabuf.c
+  lv_wl_keyboard.c
+  lv_wl_pointer.c
+  lv_wl_pointer_axis.c
+  lv_wl_seat.c
+  lv_wl_shm.c
+  lv_wl_touch.c
+  lv_wl_window.c
+  lv_wl_window_decorations.c
+  lv_wl_xdg_shell.c
+  lv_windows_context.c
+  lv_windows_display.c
+  lv_windows_input.c
+  lv_x11_display.c
+  lv_x11_input.c
+  lv_binfont_loader.c
+  lv_font.c
+  lv_font_dejavu_16_persian_hebrew.c
+  lv_font_fmt_txt.c
+  lv_font_montserrat_10.c
+  lv_font_montserrat_12.c
+  lv_font_montserrat_14.c
+  lv_font_montserrat_14_aligned.c
+  lv_font_montserrat_16.c
+  lv_font_montserrat_18.c
+  lv_font_montserrat_20.c
+  lv_font_montserrat_22.c
+  lv_font_montserrat_24.c
+  lv_font_montserrat_26.c
+  lv_font_montserrat_28.c
+  lv_font_montserrat_28_compressed.c
+  lv_font_montserrat_30.c
+  lv_font_montserrat_32.c
+  lv_font_montserrat_34.c
+  lv_font_montserrat_36.c
+  lv_font_montserrat_38.c
+  lv_font_montserrat_40.c
+  lv_font_montserrat_42.c
+  lv_font_montserrat_44.c
+  lv_font_montserrat_46.c
+  lv_font_montserrat_48.c
+  lv_font_montserrat_8.c
+  lv_font_source_han_sans_sc_14_cjk.c
+  lv_font_source_han_sans_sc_16_cjk.c
+  lv_font_unscii_16.c
+  lv_font_unscii_8.c
+  lv_indev.c
+  lv_indev_gesture.c
+  lv_indev_scroll.c
+  lv_flex.c
+  lv_grid.c
+  lv_layout.c
+  code128.c
+  lv_barcode.c
+  lv_bin_decoder.c
+  lv_bmp.c
+  xmlparse.c
+  xmlrole.c
+  xmltok.c
+  xmltok_impl.c
+  xmltok_ns.c
+  lv_ffmpeg.c
+  lv_freetype.c
+  lv_freetype_glyph.c
+  lv_freetype_image.c
+  lv_freetype_outline.c
+  lv_ftsystem.c
+  decomp_raw.c
+  frogfs.c
+  lv_fs_cbfs.c
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\libs\frogfs\src\decomp_raw.c(41,23): warning C4267: '=': conversion from 'size_t' to 'long', possible loss of data
+  lv_fs_fatfs.c
+  lv_fs_frogfs.c
+  lv_fs_littlefs.c
+  lv_fs_memfs.c
+  lv_fs_posix.c
+  lv_fs_stdio.c
+  lv_fs_uefi.c
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\layouts\lv_layout.c(71,35): warning C4018: '<=': signed/unsigned mismatch
+  lv_fs_win32.c
+  EVE_commands.c
+  EVE_supplemental.c
+  gif.c
+  lv_gif.c
+  chromatic.c
+  lv_gltf_view_shader.c
+  lv_gltf_ibl_sampler.c
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\libs\gif\AnimatedGIF\src\gif.c(1453,79): warning C4244: '=': conversion from 'unsigned short' to 'unsigned char', possible loss of data
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\libs\gif\AnimatedGIF\src\gif.c(1470,17): warning C4244: '=': conversion from 'unsigned short' to 'unsigned char', possible loss of data
+  lv_gstreamer.c
+  lv_libjpeg_turbo.c
+  lv_libpng.c
+  lodepng.c
+  lv_lodepng.c
+  lz4.c
+  lv_qrcode.c
+  qrcodegen.c
+  lv_rle.c
+  lv_rlottie.c
+  lv_svg.c
+  lv_svg_decoder.c
+  lv_svg_parser.c
+  lv_svg_render.c
+  lv_svg_token.c
+  lv_tiny_ttf.c
+  lv_tjpgd.c
+  tjpgd.c
+  lv_vg_lite_hal.c
+  vg_lite_os.c
+  vg_lite_kernel.c
+  vg_lite.c
+  vg_lite_image.c
+  vg_lite_matrix.c
+  vg_lite_path.c
+  vg_lite_stroke.c
+  lv_init.c
+  lv_cache_lru_ll.c
+  lv_cache_lru_rb.c
+  lv_cache_sc_da.c
+  lv_image_cache.c
+  lv_image_header_cache.c
+  lv_cache.c
+  lv_cache_entry.c
+  lv_anim.c
+  lv_anim_timeline.c
+  lv_area.c
+  lv_array.c
+  lv_async.c
+  lv_bidi.c
+  lv_circle_buf.c
+  lv_color.c
+  lv_color_op.c
+  lv_event.c
+  lv_fs.c
+  lv_grad.c
+  lv_iter.c
+  lv_ll.c
+  lv_log.c
+  lv_lru.c
+  lv_math.c
+  lv_matrix.c
+  lv_palette.c
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\misc\lv_lru.c(144,51): warning C4267: 'function': conversion from 'size_t' to 'uint32_t', possible loss of data
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\misc\lv_lru.c(149,46): warning C4267: 'function': conversion from 'size_t' to 'uint32_t', possible loss of data
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\misc\lv_lru.c(194,51): warning C4267: 'function': conversion from 'size_t' to 'uint32_t', possible loss of data
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\misc\lv_lru.c(197,46): warning C4267: 'function': conversion from 'size_t' to 'uint32_t', possible loss of data
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\misc\lv_lru.c(218,51): warning C4267: 'function': conversion from 'size_t' to 'uint32_t', possible loss of data
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\misc\lv_lru.c(221,46): warning C4267: 'function': conversion from 'size_t' to 'uint32_t', possible loss of data
+  lv_profiler_builtin.c
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\misc\cache\class\lv_cache_lru_ll.c(418,16): warning C4267: 'return': conversion from 'size_t' to 'uint32_t', possible loss of data
+  lv_profiler_builtin_posix.c
+  lv_rb.c
+  lv_style.c
+  lv_style_gen.c
+  lv_templ.c
+  lv_text.c
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\misc\cache\class\lv_cache_lru_rb.c(470,16): warning C4267: 'return': conversion from 'size_t' to 'uint32_t', possible loss of data
+  lv_text_ap.c
+  lv_timer.c
+  lv_tree.c
+  lv_utils.c
+  lv_cmsis_rtos2.c
+  lv_freertos.c
+  lv_linux.c
+  lv_mqx.c
+  lv_os.c
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\misc\cache\lv_cache.c(55,24): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\misc\cache\lv_cache.c(56,23): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\misc\cache\lv_cache.c(253,23): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
+  lv_os_none.c
+  lv_pthread.c
+  lv_rtthread.c
+  lv_sdl2.c
+  lv_windows.c
+  lv_file_explorer.c
+  lv_font_manager.c
+  lv_font_manager_recycle.c
+  lv_fragment.c
+  lv_fragment_manager.c
+  lv_gridnav.c
+  lv_ime_pinyin.c
+  lv_imgfont.c
+  lv_monkey.c
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\misc\lv_fs.c(615,32): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\misc\lv_fs.c(616,31): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
+  lv_observer.c
+  lv_snapshot.c
+  lv_sysmon.c
+  lv_test_display.c
+  lv_test_helpers.c
+  lv_test_indev.c
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\misc\lv_style.c(273,55): warning C4267: '=': conversion from 'size_t' to 'uint32_t', possible loss of data
+  lv_test_indev_gesture.c
+  lv_test_screenshot_compare.c
+  lv_translation.c
+  vg_lite_matrix.c
+  lv_xml.c
+  lv_xml_base_types.c
+  lv_xml_component.c
+  lv_xml_load.c
+  lv_xml_parser.c
+  lv_xml_style.c
+  lv_xml_test.c
+  lv_xml_translation.c
+  lv_xml_update.c
+  lv_xml_utils.c
+  lv_xml_widget.c
+  lv_xml_arc_parser.c
+  lv_xml_bar_parser.c
+  lv_xml_buttonmatrix_parser.c
+  lv_xml_button_parser.c
+  lv_xml_calendar_parser.c
+  lv_xml_canvas_parser.c
+  lv_xml_chart_parser.c
+  lv_xml_checkbox_parser.c
+  lv_xml_dropdown_parser.c
+  lv_xml_image_parser.c
+  lv_xml_keyboard_parser.c
+  lv_xml_label_parser.c
+  lv_xml_obj_parser.c
+  lv_xml_qrcode_parser.c
+  lv_xml_roller_parser.c
+  lv_xml_scale_parser.c
+  lv_xml_slider_parser.c
+  lv_xml_spangroup_parser.c
+  lv_xml_spinbox_parser.c
+  lv_xml_switch_parser.c
+  lv_xml_table_parser.c
+  lv_xml_tabview_parser.c
+  lv_xml_textarea_parser.c
+  lv_mem_core_builtin.c
+  lv_sprintf_builtin.c
+  lv_string_builtin.c
+  lv_tlsf.c
+  lv_mem_core_clib.c
+  lv_sprintf_clib.c
+  lv_string_clib.c
+  lv_mem.c
+  lv_mem_core_micropython.c
+  lv_mem_core_rtthread.c
+  lv_sprintf_rtthread.c
+  lv_string_rtthread.c
+  lv_mem_core_uefi.c
+  lv_theme_default.c
+  lv_theme.c
+  lv_theme_mono.c
+  lv_theme_simple.c
+  lv_tick.c
+  lv_3dtexture.c
+  lv_animimage.c
+  lv_arclabel.c
+  lv_arc.c
+  lv_bar.c
+  lv_buttonmatrix.c
+  lv_button.c
+  lv_calendar.c
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\widgets\animimage\lv_animimage.c(263,26): warning C4267: '=': conversion from 'size_t' to 'int8_t', possible loss of data
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\widgets\arclabel\lv_arclabel.c(604,25): warning C4244: '=': conversion from '__int64' to 'uint32_t', possible loss of data
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\widgets\arclabel\lv_arclabel.c(616,34): warning C4244: '=': conversion from '__int64' to 'uint32_t', possible loss of data
+  lv_calendar_chinese.c
+  lv_calendar_header_arrow.c
+  lv_calendar_header_dropdown.c
+  lv_canvas.c
+  lv_chart.c
+  lv_checkbox.c
+  lv_dropdown.c
+  lv_imagebutton.c
+  lv_image.c
+  lv_keyboard.c
+  lv_label.c
+  lv_led.c
+  lv_line.c
+  lv_list.c
+  lv_lottie.c
+  lv_menu.c
+  lv_msgbox.c
+  lv_objx_templ.c
+  lv_animimage_properties.c
+  lv_dropdown_properties.c
+  lv_image_properties.c
+  lv_keyboard_properties.c
+  lv_label_properties.c
+  lv_obj_properties.c
+  lv_roller_properties.c
+  lv_slider_properties.c
+  lv_style_properties.c
+  lv_textarea_properties.c
+  lv_roller.c
+  lv_scale.c
+  lv_slider.c
+  lv_span.c
+  lv_spinbox.c
+  lv_spinner.c
+  lv_switch.c
+  lv_table.c
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(733,84): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(755,88): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(772,88): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(786,84): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(842,73): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(843,74): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(844,81): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(845,83): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(853,70): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(854,69): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(855,78): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(856,77): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(857,79): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(882,65): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(885,78): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(897,84): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(901,69): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(902,78): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(903,80): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(911,74): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(913,82): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(914,83): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(915,73): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(917,70): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(919,83): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(931,82): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(937,83): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(948,84): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(985,84): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(987,81): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(988,72): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(1017,84): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(1018,72): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(1049,70): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(1052,69): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(1053,75): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(1054,84): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(1055,86): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(1070,84): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(1094,84): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(1099,84): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(1115,84): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(1146,84): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(1177,84): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\default\lv_theme_default.c(1181,84): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\mono\lv_theme_mono.c(312,68): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\mono\lv_theme_mono.c(313,74): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\mono\lv_theme_mono.c(314,75): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\mono\lv_theme_mono.c(315,78): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\mono\lv_theme_mono.c(323,68): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\mono\lv_theme_mono.c(324,69): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\mono\lv_theme_mono.c(325,74): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\mono\lv_theme_mono.c(327,75): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\mono\lv_theme_mono.c(328,78): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\mono\lv_theme_mono.c(335,64): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\mono\lv_theme_mono.c(336,65): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\mono\lv_theme_mono.c(337,70): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\mono\lv_theme_mono.c(338,71): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\mono\lv_theme_mono.c(339,74): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\mono\lv_theme_mono.c(369,64): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\mono\lv_theme_mono.c(371,65): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\mono\lv_theme_mono.c(380,74): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\mono\lv_theme_mono.c(381,69): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\mono\lv_theme_mono.c(382,68): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\mono\lv_theme_mono.c(435,68): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\mono\lv_theme_mono.c(436,67): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\mono\lv_theme_mono.c(458,72): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\mono\lv_theme_mono.c(468,64): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\mono\lv_theme_mono.c(469,70): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\mono\lv_theme_mono.c(472,74): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\mono\lv_theme_mono.c(480,64): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\mono\lv_theme_mono.c(481,65): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\mono\lv_theme_mono.c(484,74): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+  lv_tabview.c
+  lv_textarea.c
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\widgets\calendar\lv_calendar.c(179,33): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\widgets\spinbox\lv_spinbox.c(106,75): warning C4244: '=': conversion from 'const int64_t' to 'int32_t', possible loss of data
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\widgets\spinbox\lv_spinbox.c(107,79): warning C4244: '=': conversion from 'const int64_t' to 'int32_t', possible loss of data
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\widgets\spinbox\lv_spinbox.c(191,30): warning C4244: 'initializing': conversion from 'int64_t' to 'const int32_t', possible loss of data
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\widgets\spinbox\lv_spinbox.c(390,41): warning C4244: '=': conversion from 'int64_t' to 'int32_t', possible loss of data
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\widgets\spinbox\lv_spinbox.c(419,57): warning C4267: 'function': conversion from 'size_t' to 'int32_t', possible loss of data
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\widgets\spinbox\lv_spinbox.c(431,32): warning C4267: 'initializing': conversion from 'size_t' to 'uint32_t', possible loss of data
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\widgets\spinbox\lv_spinbox.c(520,28): warning C4018: '<': signed/unsigned mismatch
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\widgets\spinbox\lv_spinbox.c(497,56): warning C4267: 'initializing': conversion from 'size_t' to 'const int', possible loss of data
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\simple\lv_theme_simple.c(304,70): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\simple\lv_theme_simple.c(339,69): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\simple\lv_theme_simple.c(369,72): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\themes\simple\lv_theme_simple.c(383,67): warning C5287: operands are different enum types 'lv_part_t' and 'lv_state_t'; use an explicit cast to silence this warning
+  lv_tileview.c
+  lv_win.c
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\widgets\dropdown\lv_dropdown.c(298,27): warning C4267: 'initializing': conversion from 'size_t' to 'uint32_t', possible loss of data
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\LvglPlatform\lvgl\src\widgets\imagebutton\lv_imagebutton.c(183,20): warning C4018: '>': signed/unsigned mismatch
+  lv_lovyan_gfx.cpp
+  lv_tft_espi.cpp
+  lv_fs_arduino_esp_littlefs.cpp
+  lv_fs_arduino_sd.cpp
+  lv_gltf_bind.cpp
+  lv_gltf_data.cpp
+  lv_gltf_data_animations.cpp
+  lv_gltf_data_cache.cpp
+  lv_gltf_data_injest.cpp
+  lv_gltf_data_mesh.cpp
+  lv_gltf_data_node.cpp
+  lv_gltf_data_primitive.cpp
+  lv_gltf_data_shader.cpp
+  lv_gltf_data_skin.cpp
+  lv_gltf_data_texture.cpp
+  lv_gltf_uniform_locations.cpp
+  lv_gltf_view.cpp
+  lv_gltf_view_render.cpp
+  lv_gltf_view_shader.cpp
+  lv_gltf_math.cpp
+  tvgAccessor.cpp
+  tvgAnimation.cpp
+  tvgCanvas.cpp
+  tvgCapi.cpp
+  tvgCompressor.cpp
+  tvgFill.cpp
+  tvgGlCanvas.cpp
+  tvgInitializer.cpp
+  tvgLoader.cpp
+  tvgLottieAnimation.cpp
+  tvgLottieBuilder.cpp
+  tvgLottieExpressions.cpp
+  tvgLottieInterpolator.cpp
+  tvgLottieLoader.cpp
+  tvgLottieModel.cpp
+  tvgLottieModifier.cpp
+  tvgLottieParser.cpp
+  tvgLottieParserHandler.cpp
+  tvgMath.cpp
+  tvgPaint.cpp
+  tvgPicture.cpp
+  tvgRawLoader.cpp
+  tvgRender.cpp
+  tvgSaver.cpp
+  tvgScene.cpp
+  tvgShape.cpp
+  tvgStr.cpp
+  tvgSvgCssStyle.cpp
+  tvgSvgLoader.cpp
+  tvgSvgPath.cpp
+  tvgSvgSceneBuilder.cpp
+  tvgSvgUtil.cpp
+  tvgSwCanvas.cpp
+  tvgSwFill.cpp
+  tvgSwImage.cpp
+  tvgSwMath.cpp
+  tvgSwMemPool.cpp
+  tvgSwPostEffect.cpp
+  tvgSwRaster.cpp
+  tvgSwRenderer.cpp
+  tvgSwRle.cpp
+  tvgSwShape.cpp
+  tvgSwStroke.cpp
+  tvgTaskScheduler.cpp
+  tvgText.cpp
+  tvgWgCanvas.cpp
+  tvgXmlParser.cpp
+  vg_lite_tvg.cpp
+  LvglWindowsDesktopApplication.cpp
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\Output\Objects\Debug\LvglWindowsDesktopApplication\x64\lv_gltf_view_shader.obj : warning LNK4042: object specified more than once; extras ignored
+C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\Output\Objects\Debug\LvglWindowsDesktopApplication\x64\vg_lite_matrix.obj : warning LNK4042: object specified more than once; extras ignored
+  LvglWindowsDesktopApplication.vcxproj -> C:\Users\Josiah\Documents\Senior Design\Code\PowerSupplyMcPowerFace\src\GUI\lv_port_pc_visual_studio\Output\Binaries\Debug\x64\LvglWindowsDesktopApplication.exe

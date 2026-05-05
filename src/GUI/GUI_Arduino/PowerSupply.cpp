@@ -4,8 +4,9 @@
 #include <stdlib.h>
 #include <math.h>
 
-#define VERT_RES 480
-#define HORI_RES 800
+#define HORI_RES 480
+#define VERT_RES 272
+
 
 /* Global text objects for live updates */
 lv_obj_t* live_update_text;
@@ -19,8 +20,19 @@ static lv_obj_t* sys_temp_scale;
 static lv_obj_t* V33_delta_scale;
 static lv_obj_t* v33_volt_needle;
 
+/* V33 scale position for needle updates */
+static int32_t v33_scale_w = 60;
+static int32_t v33_scale_h = 200;
+static int32_t v33_scale_x = 0;
+static int32_t v33_scale_y = 0;
 
 static lv_obj_t* screen;
+
+
+/* Example data that would be updated by your system */
+//static float sensor_value_1 = 0.0f;
+//static float sensor_value_2 = 0.0f;
+//static float sensor_value_3 = 0.0f;
 
 typedef struct {
     float v12_voltage;
@@ -70,7 +82,7 @@ static void ps_create_sys_temp_scale(void)
     lv_obj_set_style_length(sys_temp_scale, 10, LV_PART_INDICATOR);
     lv_scale_set_range(sys_temp_scale, 0, 100);
 
-    static const char * custom_labels[] = {"0 °C", "25 °C", "50 °C", "75 °C", "100 °C", NULL};
+    static const char* custom_labels[] = { "0 °C", "25 °C", "50 °C", "75 °C", "100 °C", NULL };
     lv_scale_set_text_src(sys_temp_scale, custom_labels);
 
     static lv_style_t indicator_style;
@@ -122,7 +134,7 @@ static void ps_create_sys_temp_scale(void)
     lv_style_set_arc_width(&section_main_line_style, 4U); /*Tick width*/
 
     /* Configure section styles */
-    lv_scale_section_t * section = lv_scale_add_section(sys_temp_scale);
+    lv_scale_section_t* section = lv_scale_add_section(sys_temp_scale);
     lv_scale_set_section_range(sys_temp_scale, section, 75, 100);
     lv_scale_set_section_style_indicator(sys_temp_scale, section, &section_label_style);
     lv_scale_set_section_style_items(sys_temp_scale, section, &section_minor_tick_style);
@@ -131,40 +143,60 @@ static void ps_create_sys_temp_scale(void)
 
 static void V33_set_needle(double volt_val, int32_t scale_h, int32_t scale_w, int32_t scale_x_loc, int32_t scale_y_loc)
 {
-    /* Round to 2 decimal places to preserve values like 3.32, 3.37 */
-
-    /* Scale geometry */
-    int32_t x_loc = scale_x_loc + scale_w * 7/8;
-    int32_t y_loc = scale_y_loc + scale_h / 2;
     double range_min = 3.10;
     double range_max = 3.50;
-    int32_t needle_w = 35;   /* how far the line extends to the right */
 
-    /* Map value → Y.  VERTICAL_LEFT: max is at top, min at bottom */
-    if (round(volt_val) != 3.30) {
-        if (volt_val > 3.30) {
-            y_loc = (int32_t)(y_loc - (scale_h / 41)*(3.5 - volt_val)*100);
-        }
-        else if (volt_val < 3.30) {
-            y_loc = (int32_t)(y_loc + ((scale_h / 2) / 20) * (range_max - volt_val));
-        }
-    }
+    /* Clamp to valid range */
+    if (volt_val < range_min) volt_val = range_min;
+    if (volt_val > range_max) volt_val = range_max;
+
+    /* X: anchor needle at right edge of the scale widget */
+    int32_t x_start = scale_x_loc + scale_w;
+    int32_t needle_w = 25;
+
+    /*
+     * Y: VERTICAL_LEFT puts max at top (y = scale_y_loc)
+     *    and min at bottom (y = scale_y_loc + scale_h).
+     *    Linear interpolation gives us the correct pixel position
+     *    for any value in [range_min, range_max].
+     *
+     *    y = scale_y_loc + scale_h * (range_max - volt_val)
+     *                                 / (range_max - range_min)
+     *
+     *    3.50 → scale_y_loc + 0            (top)
+     *    3.30 → scale_y_loc + scale_h/2    (centre)
+     *    3.10 → scale_y_loc + scale_h      (bottom)
+     */
+    int32_t y_loc = (int32_t)(scale_y_loc + (double)scale_h * (range_max - volt_val) / (range_max - range_min));
 
     static lv_point_precise_t pts[2];
-    pts[0].x = x_loc;
+    pts[0].x = x_start;
     pts[0].y = y_loc;
-    pts[1].x = x_loc + needle_w;
+    pts[1].x = x_start + needle_w;
     pts[1].y = y_loc;
 
     lv_line_set_points(v33_volt_needle, pts, 2);
+
+}
+
+static void ps_update_v33_needle(void)
+{
+    v33_volts = v33_rail_voltage;
+    V33_set_needle(v33_volts, v33_scale_h, v33_scale_w, v33_scale_x, v33_scale_y);
 }
 
 static void ps_create_V33_scale(void)
 {
     int32_t scale_w = 60;
-    int32_t scale_h = 200;
+    int32_t scale_h = 170;
     int32_t x_loc = HORI_RES / 2 - scale_w / 2; // Center
     int32_t y_loc = VERT_RES / 2 - scale_h / 2; // Center
+
+    /* Store scale dimensions for needle updates */
+    v33_scale_w = scale_w;
+    v33_scale_h = scale_h;
+    v33_scale_x = x_loc;
+    v33_scale_y = y_loc;
 
     V33_delta_scale = lv_scale_create(lv_screen_active());
     lv_obj_set_size(V33_delta_scale, scale_w, scale_h);
@@ -182,7 +214,7 @@ static void ps_create_V33_scale(void)
 
     lv_scale_set_range(V33_delta_scale, 310, 350);
 
-    static const char* delta_labels[] = {"3.10", "3.20", "3.30", "3.40", "3.50", NULL};
+    static const char* delta_labels[] = { "3.10 ", "3.20 ", "3.30 ", "3.40 ", "3.50 ", NULL };
     lv_scale_set_text_src(V33_delta_scale, delta_labels);
 
     static lv_style_t indicator_style;
@@ -201,13 +233,80 @@ static void ps_create_V33_scale(void)
     lv_style_set_line_width(&minor_ticks_style, 2U);    /*Tick width*/
     lv_obj_add_style(V33_delta_scale, &minor_ticks_style, LV_PART_ITEMS);
 
+    /* Add color-coded tolerance sections */
+    /* Red: 310-313.5 (3.10V to 3.10V + 5% = 3.135V) */
+    static lv_style_t red_indicator_style;
+    lv_style_init(&red_indicator_style);
+    lv_style_set_line_color(&red_indicator_style, lv_palette_darken(LV_PALETTE_RED, 2));
+    lv_style_set_width(&red_indicator_style, 10U);
+    lv_style_set_line_width(&red_indicator_style, 2U);
+
+    static lv_style_t red_ticks_style;
+    lv_style_init(&red_ticks_style);
+    lv_style_set_line_color(&red_ticks_style, lv_palette_darken(LV_PALETTE_RED, 2));
+    lv_style_set_width(&red_ticks_style, 5U);
+    lv_style_set_line_width(&red_ticks_style, 2U);
+
+    lv_scale_section_t* section_red_low = lv_scale_add_section(V33_delta_scale);
+    lv_scale_set_section_range(V33_delta_scale, section_red_low, 310, 313);
+    lv_scale_set_section_style_indicator(V33_delta_scale, section_red_low, &red_indicator_style);
+    lv_scale_set_section_style_items(V33_delta_scale, section_red_low, &red_ticks_style);
+
+    /* Orange: 313.5-321.75 (3.135V to 3.2175V) */
+    static lv_style_t orange_indicator_style;
+    lv_style_init(&orange_indicator_style);
+    lv_style_set_line_color(&orange_indicator_style, lv_palette_darken(LV_PALETTE_ORANGE, 2));
+    lv_style_set_width(&orange_indicator_style, 10U);
+    lv_style_set_line_width(&orange_indicator_style, 2U);
+
+    static lv_style_t orange_ticks_style;
+    lv_style_init(&orange_ticks_style);
+    lv_style_set_line_color(&orange_ticks_style, lv_palette_darken(LV_PALETTE_ORANGE, 2));
+    lv_style_set_width(&orange_ticks_style, 5U);
+    lv_style_set_line_width(&orange_ticks_style, 2U);
+
+    lv_scale_section_t* section_orange_low = lv_scale_add_section(V33_delta_scale);
+    lv_scale_set_section_range(V33_delta_scale, section_orange_low, 313, 322);
+    lv_scale_set_section_style_indicator(V33_delta_scale, section_orange_low, &orange_indicator_style);
+    lv_scale_set_section_style_items(V33_delta_scale, section_orange_low, &orange_ticks_style);
+
+    /* Green: 321.75-338.25 (3.2175V to 3.3825V) */
+    static lv_style_t green_indicator_style;
+    lv_style_init(&green_indicator_style);
+    lv_style_set_line_color(&green_indicator_style, lv_palette_darken(LV_PALETTE_GREEN, 2));
+    lv_style_set_width(&green_indicator_style, 10U);
+    lv_style_set_line_width(&green_indicator_style, 2U);
+
+    static lv_style_t green_ticks_style;
+    lv_style_init(&green_ticks_style);
+    lv_style_set_line_color(&green_ticks_style, lv_palette_darken(LV_PALETTE_GREEN, 2));
+    lv_style_set_width(&green_ticks_style, 5U);
+    lv_style_set_line_width(&green_ticks_style, 2U);
+
+    lv_scale_section_t* section_green = lv_scale_add_section(V33_delta_scale);
+    lv_scale_set_section_range(V33_delta_scale, section_green, 322, 338);
+    lv_scale_set_section_style_indicator(V33_delta_scale, section_green, &green_indicator_style);
+    lv_scale_set_section_style_items(V33_delta_scale, section_green, &green_ticks_style);
+
+    /* Orange: 338.25-346.5 (3.3825V to 3.465V) */
+    lv_scale_section_t* section_orange_high = lv_scale_add_section(V33_delta_scale);
+    lv_scale_set_section_range(V33_delta_scale, section_orange_high, 338, 346);
+    lv_scale_set_section_style_indicator(V33_delta_scale, section_orange_high, &orange_indicator_style);
+    lv_scale_set_section_style_items(V33_delta_scale, section_orange_high, &orange_ticks_style);
+
+    /* Red: 346.5-350 (3.465V to 3.50V) */
+    lv_scale_section_t* section_red_high = lv_scale_add_section(V33_delta_scale);
+    lv_scale_set_section_range(V33_delta_scale, section_red_high, 346, 350);
+    lv_scale_set_section_style_indicator(V33_delta_scale, section_red_high, &red_indicator_style);
+    lv_scale_set_section_style_items(V33_delta_scale, section_red_high, &red_ticks_style);
+
     /* Create needle as a child of SCREEN, not the scale */
     v33_volt_needle = lv_line_create(lv_screen_active());  // Changed from V33_delta_scale
     lv_obj_set_style_line_color(v33_volt_needle, lv_palette_darken(LV_PALETTE_PURPLE, 1), LV_PART_MAIN);
     lv_obj_set_style_line_width(v33_volt_needle, 3, LV_PART_MAIN);
     lv_obj_set_style_line_rounded(v33_volt_needle, true, LV_PART_MAIN);
 
-    v33_volts = 3.32;
+    v33_volts = 3.30;
     V33_set_needle(v33_volts, scale_h, scale_w, x_loc, y_loc);
 
     //lv_timer_create(ps_update_v33_needle_callback, 200, NULL);
@@ -288,18 +387,21 @@ static void ps_create_live_text_objects(void)
 }
 
 void ps_set_values(float v12v, float v12a,
-                   float v5v,  float v5a,
-                   float v33v, float v33a,
-                   float ac_w, float temp_c)
+    float v5v, float v5a,
+    float v33v, float v33a,
+    float ac_w, float temp_c)
 {
-    v12_rail_voltage   = v12v;
-    v12_rail_current   = v12a;
-    v5_rail_voltage    = v5v;
-    v5_rail_current    = v5a;
-    v33_rail_voltage   = v33v;
-    v33_rail_current   = v33a;
-    ac_power_input     = ac_w;
+    v12_rail_voltage = v12v;
+    v12_rail_current = v12a;
+    v5_rail_voltage = v5v;
+    v5_rail_current = v5a;
+    v33_rail_voltage = v33v;
+    v33_rail_current = v33a;
+    ac_power_input = ac_w;
     system_temperature = temp_c;
+
+    /* Update V33 needle */
+    ps_update_v33_needle();
 }
 
 
@@ -312,24 +414,24 @@ void ps_gui(void)
     //ps_create_sys_temp_scale();
 
     /* Create V33_delta_scale display */
-    //ps_create_V33_scale();
+    ps_create_V33_scale();
 
     /* Create the live-updating text objects */
-    ps_create_live_text_objects();
+    //ps_create_live_text_objects();
 
     /* Create rail_values structure and timer */
-    ps_rail_values_t* rail_values = (ps_rail_values_t*)malloc(sizeof(ps_rail_values_t));
-    if (rail_values != NULL) {
-        rail_values->v12_voltage = 0.0f;
-        rail_values->v12_current = 0.0f;
-        rail_values->v5_voltage = 0.0f;
-        rail_values->v5_current = 0.0f;
-        rail_values->v33_voltage = 0.0f;
-        rail_values->v33_current = 0.0f;
-        rail_values->ac_power = 0.0f;
-        rail_values->temperature = 0.0f;
+    //ps_rail_values_t* rail_values = (ps_rail_values_t*)malloc(sizeof(ps_rail_values_t));
+    //if (rail_values != NULL) {
+    //    rail_values->v12_voltage = 0.0f;
+    //    rail_values->v12_current = 0.0f;
+    //    rail_values->v5_voltage = 0.0f;
+    //    rail_values->v5_current = 0.0f;
+    //    rail_values->v33_voltage = 0.0f;
+    //    rail_values->v33_current = 0.0f;
+    //    rail_values->ac_power = 0.0f;
+    //    rail_values->temperature = 0.0f;
 
-        /* Create a timer that calls ps_update_timer_callback every 500ms */
-        lv_timer_create(ps_update_timer_callback, 500, rail_values);
-    }
+    //    /* Create a timer that calls ps_update_timer_callback every 500ms */
+    //    lv_timer_create(ps_update_timer_callback, 500, rail_values);
+    //}
 }

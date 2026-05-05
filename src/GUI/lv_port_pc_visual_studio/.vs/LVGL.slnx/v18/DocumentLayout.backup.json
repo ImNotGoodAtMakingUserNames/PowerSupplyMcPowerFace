@@ -48,6 +48,10 @@
     {
       "AbsoluteMoniker": "D:0:0:{3CA6E070-4AC1-475E-BB17-CF29AE4806DF}|LvglWindowsSimulator\\LvglWindowsSimulator.vcxproj|C:\\Users\\Josiah\\Documents\\Senior Design\\Code\\PowerSupplyMcPowerFace\\src\\GUI\\lv_port_pc_visual_studio\\LvglPlatform\\lvgl\\demos\\widgets\\lv_demo_widgets.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{3CA6E070-4AC1-475E-BB17-CF29AE4806DF}|LvglWindowsSimulator\\LvglWindowsSimulator.vcxproj|solutionrelative:LvglPlatform\\lvgl\\demos\\widgets\\lv_demo_widgets.h||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\Josiah\\Documents\\Senior Design\\Code\\PowerSupplyMcPowerFace\\src\\GUI\\lv_port_pc_visual_studio\\src\\GUI\\GUI_Arduino\\PowerSupply.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:src\\GUI\\GUI_Arduino\\PowerSupply.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     }
   ],
   "DocumentGroupContainers": [
@@ -57,8 +61,21 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "PowerSupply.cpp",
+              "DocumentMoniker": "C:\\Users\\Josiah\\Documents\\Senior Design\\Code\\PowerSupplyMcPowerFace\\src\\GUI\\lv_port_pc_visual_studio\\src\\GUI\\GUI_Arduino\\PowerSupply.cpp",
+              "RelativeDocumentMoniker": "src\\GUI\\GUI_Arduino\\PowerSupply.cpp",
+              "ToolTip": "C:\\Users\\Josiah\\Documents\\Senior Design\\Code\\PowerSupplyMcPowerFace\\src\\GUI\\lv_port_pc_visual_studio\\src\\GUI\\GUI_Arduino\\PowerSupply.cpp",
+              "RelativeToolTip": "src\\GUI\\GUI_Arduino\\PowerSupply.cpp",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2026-05-04T23:39:33.974Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Document",
               "DocumentIndex": 4,
@@ -79,7 +96,7 @@
               "RelativeDocumentMoniker": "LvglWindowsSimulator\\PowerSupply.c",
               "ToolTip": "C:\\Users\\Josiah\\Documents\\Senior Design\\Code\\PowerSupplyMcPowerFace\\src\\GUI\\lv_port_pc_visual_studio\\LvglWindowsSimulator\\PowerSupply.c",
               "RelativeToolTip": "LvglWindowsSimulator\\PowerSupply.c",
-              "ViewState": "AgIAAIYAAAAAAAAAAAAMwJQAAAAYAAAAAAAAAA==",
+              "ViewState": "AgIAAOkAAAAAAAAAAAAQwIsBAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000423|",
               "WhenOpened": "2026-04-16T22:21:14.965Z",
               "EditorCaption": ""
