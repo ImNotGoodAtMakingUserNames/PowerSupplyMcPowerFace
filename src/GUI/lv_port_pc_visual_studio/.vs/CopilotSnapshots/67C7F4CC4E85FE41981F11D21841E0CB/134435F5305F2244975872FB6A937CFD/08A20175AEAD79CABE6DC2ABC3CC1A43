@@ -17,16 +17,19 @@ typedef struct {
     lv_obj_t* v12_needle;
     lv_obj_t* text_v12_label;
     lv_obj_t* text_v12_current;
+    int32_t v12_needle_width;
 
     lv_obj_t* v5_scale;
     lv_obj_t* v5_needle;
     lv_obj_t* text_v5_label;
     lv_obj_t* text_v5_current;
+    int32_t v5_needle_width;
 
     lv_obj_t* v33_scale;
     lv_obj_t* v33_needle;
     lv_obj_t* text_v33_label;
     lv_obj_t* text_v33_current;
+    int32_t v33_needle_width;
 
     /* Text labels for live updates */
     lv_obj_t* live_update_text;
@@ -163,7 +166,7 @@ static void ps_create_sys_temp_scale(void)
     lv_scale_set_section_style_main(ui_objects.sys_temp_scale, section, &section_main_line_style);
 }
 
-static void V33_set_needle(lv_obj_t* needle, double volt_val, int32_t scale_h, int32_t scale_w, int32_t scale_x_loc, int32_t scale_y_loc, double range_min, double range_max)
+static void V33_set_needle(lv_obj_t* needle, double volt_val, int32_t scale_h, int32_t scale_w, int32_t scale_x_loc, int32_t scale_y_loc, double range_min, double range_max, int32_t needle_w)
 {
     /* Clamp to valid range */
     if (volt_val < range_min) volt_val = range_min;
@@ -171,7 +174,6 @@ static void V33_set_needle(lv_obj_t* needle, double volt_val, int32_t scale_h, i
 
     /* X: anchor needle at right edge of the scale widget */
     int32_t x_start = scale_x_loc + scale_w;
-    int32_t needle_w = 25;
 
     /*
      * Y: VERTICAL_LEFT puts max at top (y = scale_y_loc)
@@ -191,7 +193,7 @@ static void V33_set_needle(lv_obj_t* needle, double volt_val, int32_t scale_h, i
 
 }
 
-static void V5_set_needle(lv_obj_t* needle, double volt_val, int32_t scale_h, int32_t scale_w, int32_t scale_x_loc, int32_t scale_y_loc, double range_min, double range_max)
+static void V5_set_needle(lv_obj_t* needle, double volt_val, int32_t scale_h, int32_t scale_w, int32_t scale_x_loc, int32_t scale_y_loc, double range_min, double range_max, int32_t needle_w)
 {
     /* Clamp to valid range */
     if (volt_val < range_min) volt_val = range_min;
@@ -199,7 +201,6 @@ static void V5_set_needle(lv_obj_t* needle, double volt_val, int32_t scale_h, in
 
     /* X: anchor needle at right edge of the scale widget */
     int32_t x_start = scale_x_loc + scale_w;
-    int32_t needle_w = 25;
 
     /*
      * Y: VERTICAL_LEFT puts max at top (y = scale_y_loc)
@@ -219,7 +220,7 @@ static void V5_set_needle(lv_obj_t* needle, double volt_val, int32_t scale_h, in
 
 }
 
-static void V12_set_needle(lv_obj_t* needle, double volt_val, int32_t scale_h, int32_t scale_w, int32_t scale_x_loc, int32_t scale_y_loc, double range_min, double range_max)
+static void V12_set_needle(lv_obj_t* needle, double volt_val, int32_t scale_h, int32_t scale_w, int32_t scale_x_loc, int32_t scale_y_loc, double range_min, double range_max, int32_t needle_w)
 {
     /* Clamp to valid range */
     if (volt_val < range_min) volt_val = range_min;
@@ -227,7 +228,6 @@ static void V12_set_needle(lv_obj_t* needle, double volt_val, int32_t scale_h, i
 
     /* X: anchor needle at right edge of the scale widget */
     int32_t x_start = scale_x_loc + scale_w;
-    int32_t needle_w = 25;
 
     /*
      * Y: VERTICAL_LEFT puts max at top (y = scale_y_loc)
@@ -668,7 +668,7 @@ static void ps_create_voltage_scale_v12(int32_t x_loc, int32_t y_loc)
     lv_label_set_text(ui_objects.text_v12_current, "0.00 A");
     lv_obj_set_style_text_color(ui_objects.text_v12_current, lv_palette_lighten(LV_PALETTE_GREY, 3), 0);
     lv_obj_set_style_text_font(ui_objects.text_v12_current, &lv_font_montserrat_16, 0);
-    lv_obj_set_pos(ui_objects.text_v12_current, x_loc + 10, y_loc + scale_h + 10);
+    lv_obj_set_pos(ui_objects.text_v12_current, x_loc + 15, y_loc + scale_h + 10);
 
     /* Initialize needle */
     V12_set_needle(ui_objects.v12_needle, 12.0, scale_h, scale_w, x_loc, y_loc, 11.2, 12.8);
@@ -798,19 +798,4 @@ void ps_gui(void)
     /* Create the live-updating text objects */
     //ps_create_live_text_objects();
 
-    /* Create rail_values structure and timer */
-    //ps_rail_values_t* rail_values = (ps_rail_values_t*)malloc(sizeof(ps_rail_values_t));
-    //if (rail_values != NULL) {
-    //    rail_values->v12_voltage = 0.0f;
-    //    rail_values->v12_current = 0.0f;
-    //    rail_values->v5_voltage = 0.0f;
-    //    rail_values->v5_current = 0.0f;
-    //    rail_values->v33_voltage = 0.0f;
-    //    rail_values->v33_current = 0.0f;
-    //    rail_values->ac_power = 0.0f;
-    //    rail_values->temperature = 0.0f;
-
-    //    /* Create a timer that calls ps_update_timer_callback every 500ms */
-    //    lv_timer_create(ps_update_timer_callback, 500, rail_values);
-    //}
 }
