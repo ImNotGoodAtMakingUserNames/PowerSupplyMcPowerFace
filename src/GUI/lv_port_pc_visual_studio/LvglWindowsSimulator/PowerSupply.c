@@ -191,6 +191,62 @@ static void V33_set_needle(lv_obj_t* needle, double volt_val, int32_t scale_h, i
 
 }
 
+static void V5_set_needle(lv_obj_t* needle, double volt_val, int32_t scale_h, int32_t scale_w, int32_t scale_x_loc, int32_t scale_y_loc, double range_min, double range_max)
+{
+    /* Clamp to valid range */
+    if (volt_val < range_min) volt_val = range_min;
+    if (volt_val > range_max) volt_val = range_max;
+
+    /* X: anchor needle at right edge of the scale widget */
+    int32_t x_start = scale_x_loc + scale_w;
+    int32_t needle_w = 25;
+
+    /*
+     * Y: VERTICAL_LEFT puts max at top (y = scale_y_loc)
+     *    and min at bottom (y = scale_y_loc + scale_h).
+     *    Linear interpolation gives us the correct pixel position
+     *    for any value in [range_min, range_max].
+     */
+    int32_t y_loc = (int32_t)(scale_y_loc + (double)scale_h * (range_max - volt_val) / (range_max - range_min));
+
+    static lv_point_precise_t pts[2];
+    pts[0].x = x_start;
+    pts[0].y = y_loc;
+    pts[1].x = x_start + needle_w;
+    pts[1].y = y_loc;
+
+    lv_line_set_points(needle, pts, 2);
+
+}
+
+static void V12_set_needle(lv_obj_t* needle, double volt_val, int32_t scale_h, int32_t scale_w, int32_t scale_x_loc, int32_t scale_y_loc, double range_min, double range_max)
+{
+    /* Clamp to valid range */
+    if (volt_val < range_min) volt_val = range_min;
+    if (volt_val > range_max) volt_val = range_max;
+
+    /* X: anchor needle at right edge of the scale widget */
+    int32_t x_start = scale_x_loc + scale_w;
+    int32_t needle_w = 25;
+
+    /*
+     * Y: VERTICAL_LEFT puts max at top (y = scale_y_loc)
+     *    and min at bottom (y = scale_y_loc + scale_h).
+     *    Linear interpolation gives us the correct pixel position
+     *    for any value in [range_min, range_max].
+     */
+    int32_t y_loc = (int32_t)(scale_y_loc + (double)scale_h * (range_max - volt_val) / (range_max - range_min));
+
+    static lv_point_precise_t pts[2];
+    pts[0].x = x_start;
+    pts[0].y = y_loc;
+    pts[1].x = x_start + needle_w;
+    pts[1].y = y_loc;
+
+    lv_line_set_points(needle, pts, 2);
+
+}
+
 static void ps_update_v33_needle(void)
 {
     static char buffer[32];
@@ -221,7 +277,7 @@ static void ps_update_v5_needle(void)
     int32_t v5_x_loc = (HORI_RES / 2 - scale_w / 2 + right_offset) - scale_spacing;
     int32_t v5_y_loc = VERT_RES / 2 - scale_h / 2;
 
-    V33_set_needle(ui_objects.v5_needle, v5_rail_voltage, scale_h, scale_w, 
+    V5_set_needle(ui_objects.v5_needle, v5_rail_voltage, scale_h, scale_w, 
                    v5_x_loc, v5_y_loc, 4.65, 5.35);
 
     /* Update current display */
@@ -241,7 +297,7 @@ static void ps_update_v12_needle(void)
     int32_t v12_x_loc = (HORI_RES / 2 - scale_w / 2 + right_offset) - (scale_spacing * 2);
     int32_t v12_y_loc = VERT_RES / 2 - scale_h / 2;
 
-    V33_set_needle(ui_objects.v12_needle, v12_rail_voltage, scale_h, scale_w, 
+    V12_set_needle(ui_objects.v12_needle, v12_rail_voltage, scale_h, scale_w, 
                    v12_x_loc, v12_y_loc, 11.2, 12.8);
 
     /* Update current display */
@@ -335,12 +391,12 @@ static void ps_create_voltage_scale_v33(int32_t x_loc, int32_t y_loc)
     lv_scale_set_section_style_items(ui_objects.v33_scale, section, &orange_ticks_style);
 
     section = lv_scale_add_section(ui_objects.v33_scale);
-    lv_scale_set_section_range(ui_objects.v33_scale, section, 322, 338);
+    lv_scale_set_section_range(ui_objects.v33_scale, section, 322, 337);
     lv_scale_set_section_style_indicator(ui_objects.v33_scale, section, &green_indicator_style);
     lv_scale_set_section_style_items(ui_objects.v33_scale, section, &green_ticks_style);
 
     section = lv_scale_add_section(ui_objects.v33_scale);
-    lv_scale_set_section_range(ui_objects.v33_scale, section, 338, 346);
+    lv_scale_set_section_range(ui_objects.v33_scale, section, 337, 346);
     lv_scale_set_section_style_indicator(ui_objects.v33_scale, section, &orange_indicator_style);
     lv_scale_set_section_style_items(ui_objects.v33_scale, section, &orange_ticks_style);
 
@@ -360,13 +416,13 @@ static void ps_create_voltage_scale_v33(int32_t x_loc, int32_t y_loc)
     lv_label_set_text(ui_objects.text_v33_label, "3.3V");
     lv_obj_set_style_text_color(ui_objects.text_v33_label, lv_palette_lighten(LV_PALETTE_GREY, 3), 0);
     lv_obj_set_style_text_font(ui_objects.text_v33_label, &lv_font_montserrat_20, 0);
-    lv_obj_set_pos(ui_objects.text_v33_label, x_loc + 5, y_loc - 30);
+    lv_obj_set_pos(ui_objects.text_v33_label, x_loc + 15, y_loc - 30);
 
     ui_objects.text_v33_current = lv_label_create(lv_screen_active());
     lv_label_set_text(ui_objects.text_v33_current, "0.00 A");
     lv_obj_set_style_text_color(ui_objects.text_v33_current, lv_palette_lighten(LV_PALETTE_GREY, 3), 0);
     lv_obj_set_style_text_font(ui_objects.text_v33_current, &lv_font_montserrat_16, 0);
-    lv_obj_set_pos(ui_objects.text_v33_current, x_loc + 5, y_loc + scale_h + 10);
+    lv_obj_set_pos(ui_objects.text_v33_current, x_loc + 15, y_loc + scale_h + 10);
 
     /* Initialize needle */
     V33_set_needle(ui_objects.v33_needle, 3.30, scale_h, scale_w, x_loc, y_loc, 3.10, 3.50);
@@ -384,15 +440,15 @@ static void ps_create_voltage_scale_v5(int32_t x_loc, int32_t y_loc)
     lv_obj_set_x(ui_objects.v5_scale, x_loc);
     lv_obj_set_y(ui_objects.v5_scale, y_loc);
 
-    lv_scale_set_total_tick_count(ui_objects.v5_scale, 71);
+    lv_scale_set_total_tick_count(ui_objects.v5_scale, 41);
     lv_scale_set_major_tick_every(ui_objects.v5_scale, 10);
 
     lv_obj_set_style_length(ui_objects.v5_scale, 10, LV_PART_INDICATOR);
     lv_obj_set_style_length(ui_objects.v5_scale, 5, LV_PART_ITEMS);
 
-    lv_scale_set_range(ui_objects.v5_scale, 465, 535);
+    lv_scale_set_range(ui_objects.v5_scale, 460, 540);
 
-    static const char* v5_labels[] = { "4.65V", "4.75V", "4.85V", "4.95V", "5.05V", "5.15V", "5.25V", "5.35V", NULL };
+    static const char* v5_labels[] = { "4.60", "4.80", "5.00", "5.20", "5.40",NULL};
     lv_scale_set_text_src(ui_objects.v5_scale, v5_labels);
 
     static lv_style_t indicator_style;
@@ -448,27 +504,27 @@ static void ps_create_voltage_scale_v5(int32_t x_loc, int32_t y_loc)
 
     /* Add sections: Red(low) -> Orange(low) -> Green -> Orange(high) -> Red(high) */
     lv_scale_section_t* section = lv_scale_add_section(ui_objects.v5_scale);
-    lv_scale_set_section_range(ui_objects.v5_scale, section, 465, 475);
+    lv_scale_set_section_range(ui_objects.v5_scale, section, 460, 466);
     lv_scale_set_section_style_indicator(ui_objects.v5_scale, section, &red_indicator_style);
     lv_scale_set_section_style_items(ui_objects.v5_scale, section, &red_ticks_style);
 
     section = lv_scale_add_section(ui_objects.v5_scale);
-    lv_scale_set_section_range(ui_objects.v5_scale, section, 475, 490);
+    lv_scale_set_section_range(ui_objects.v5_scale, section, 466, 484);
     lv_scale_set_section_style_indicator(ui_objects.v5_scale, section, &orange_indicator_style);
     lv_scale_set_section_style_items(ui_objects.v5_scale, section, &orange_ticks_style);
 
     section = lv_scale_add_section(ui_objects.v5_scale);
-    lv_scale_set_section_range(ui_objects.v5_scale, section, 490, 510);
+    lv_scale_set_section_range(ui_objects.v5_scale, section, 484, 515);
     lv_scale_set_section_style_indicator(ui_objects.v5_scale, section, &green_indicator_style);
     lv_scale_set_section_style_items(ui_objects.v5_scale, section, &green_ticks_style);
 
     section = lv_scale_add_section(ui_objects.v5_scale);
-    lv_scale_set_section_range(ui_objects.v5_scale, section, 510, 525);
+    lv_scale_set_section_range(ui_objects.v5_scale, section, 515, 532);
     lv_scale_set_section_style_indicator(ui_objects.v5_scale, section, &orange_indicator_style);
     lv_scale_set_section_style_items(ui_objects.v5_scale, section, &orange_ticks_style);
 
     section = lv_scale_add_section(ui_objects.v5_scale);
-    lv_scale_set_section_range(ui_objects.v5_scale, section, 525, 535);
+    lv_scale_set_section_range(ui_objects.v5_scale, section, 532, 540);
     lv_scale_set_section_style_indicator(ui_objects.v5_scale, section, &red_indicator_style);
     lv_scale_set_section_style_items(ui_objects.v5_scale, section, &red_ticks_style);
 
@@ -480,19 +536,19 @@ static void ps_create_voltage_scale_v5(int32_t x_loc, int32_t y_loc)
 
     /* Create label and current display */
     ui_objects.text_v5_label = lv_label_create(lv_screen_active());
-    lv_label_set_text(ui_objects.text_v5_label, "5.0V");
+    lv_label_set_text(ui_objects.text_v5_label, "5V");
     lv_obj_set_style_text_color(ui_objects.text_v5_label, lv_palette_lighten(LV_PALETTE_GREY, 3), 0);
     lv_obj_set_style_text_font(ui_objects.text_v5_label, &lv_font_montserrat_20, 0);
-    lv_obj_set_pos(ui_objects.text_v5_label, x_loc + 5, y_loc - 30);
+    lv_obj_set_pos(ui_objects.text_v5_label, x_loc + 25, y_loc - 30);
 
     ui_objects.text_v5_current = lv_label_create(lv_screen_active());
     lv_label_set_text(ui_objects.text_v5_current, "0.00 A");
     lv_obj_set_style_text_color(ui_objects.text_v5_current, lv_palette_lighten(LV_PALETTE_GREY, 3), 0);
     lv_obj_set_style_text_font(ui_objects.text_v5_current, &lv_font_montserrat_16, 0);
-    lv_obj_set_pos(ui_objects.text_v5_current, x_loc + 5, y_loc + scale_h + 10);
+    lv_obj_set_pos(ui_objects.text_v5_current, x_loc + 15, y_loc + scale_h + 10);
 
     /* Initialize needle */
-    V33_set_needle(ui_objects.v5_needle, 5.00, scale_h, scale_w, x_loc, y_loc, 4.65, 5.35);
+    V5_set_needle(ui_objects.v5_needle, 5.00, scale_h, scale_w, x_loc, y_loc, 4.65, 5.35);
 }
 
 static void ps_create_voltage_scale_v12(int32_t x_loc, int32_t y_loc)
@@ -507,15 +563,15 @@ static void ps_create_voltage_scale_v12(int32_t x_loc, int32_t y_loc)
     lv_obj_set_x(ui_objects.v12_scale, x_loc);
     lv_obj_set_y(ui_objects.v12_scale, y_loc);
 
-    lv_scale_set_total_tick_count(ui_objects.v12_scale, 161);
-    lv_scale_set_major_tick_every(ui_objects.v12_scale, 20);
+    lv_scale_set_total_tick_count(ui_objects.v12_scale, 41);
+    lv_scale_set_major_tick_every(ui_objects.v12_scale, 10);
 
     lv_obj_set_style_length(ui_objects.v12_scale, 10, LV_PART_INDICATOR);
     lv_obj_set_style_length(ui_objects.v12_scale, 5, LV_PART_ITEMS);
 
     lv_scale_set_range(ui_objects.v12_scale, 1120, 1280);
 
-    static const char* v12_labels[] = { "11.2V", "11.4V", "11.6V", "11.8V", "12.0V", "12.2V", "12.4V", "12.6V", "12.8V", NULL };
+    static const char* v12_labels[] = { "11.20", "11.60", "12.00", "12.40", "12.80", NULL };
     lv_scale_set_text_src(ui_objects.v12_scale, v12_labels);
 
     static lv_style_t indicator_style;
@@ -571,27 +627,27 @@ static void ps_create_voltage_scale_v12(int32_t x_loc, int32_t y_loc)
 
     /* Add sections: Red(low) -> Orange(low) -> Green -> Orange(high) -> Red(high) */
     lv_scale_section_t* section = lv_scale_add_section(ui_objects.v12_scale);
-    lv_scale_set_section_range(ui_objects.v12_scale, section, 1120, 1140);
+    lv_scale_set_section_range(ui_objects.v12_scale, section, 1120, 1133);
     lv_scale_set_section_style_indicator(ui_objects.v12_scale, section, &red_indicator_style);
     lv_scale_set_section_style_items(ui_objects.v12_scale, section, &red_ticks_style);
 
     section = lv_scale_add_section(ui_objects.v12_scale);
-    lv_scale_set_section_range(ui_objects.v12_scale, section, 1140, 1160);
+    lv_scale_set_section_range(ui_objects.v12_scale, section, 1133, 1170);
     lv_scale_set_section_style_indicator(ui_objects.v12_scale, section, &orange_indicator_style);
     lv_scale_set_section_style_items(ui_objects.v12_scale, section, &orange_ticks_style);
 
     section = lv_scale_add_section(ui_objects.v12_scale);
-    lv_scale_set_section_range(ui_objects.v12_scale, section, 1160, 1240);
+    lv_scale_set_section_range(ui_objects.v12_scale, section, 1170, 1229);
     lv_scale_set_section_style_indicator(ui_objects.v12_scale, section, &green_indicator_style);
     lv_scale_set_section_style_items(ui_objects.v12_scale, section, &green_ticks_style);
 
     section = lv_scale_add_section(ui_objects.v12_scale);
-    lv_scale_set_section_range(ui_objects.v12_scale, section, 1240, 1260);
+    lv_scale_set_section_range(ui_objects.v12_scale, section, 1229, 1264);
     lv_scale_set_section_style_indicator(ui_objects.v12_scale, section, &orange_indicator_style);
     lv_scale_set_section_style_items(ui_objects.v12_scale, section, &orange_ticks_style);
 
     section = lv_scale_add_section(ui_objects.v12_scale);
-    lv_scale_set_section_range(ui_objects.v12_scale, section, 1260, 1280);
+    lv_scale_set_section_range(ui_objects.v12_scale, section, 1264, 1280);
     lv_scale_set_section_style_indicator(ui_objects.v12_scale, section, &red_indicator_style);
     lv_scale_set_section_style_items(ui_objects.v12_scale, section, &red_ticks_style);
 
@@ -606,16 +662,16 @@ static void ps_create_voltage_scale_v12(int32_t x_loc, int32_t y_loc)
     lv_label_set_text(ui_objects.text_v12_label, "12V");
     lv_obj_set_style_text_color(ui_objects.text_v12_label, lv_palette_lighten(LV_PALETTE_GREY, 3), 0);
     lv_obj_set_style_text_font(ui_objects.text_v12_label, &lv_font_montserrat_20, 0);
-    lv_obj_set_pos(ui_objects.text_v12_label, x_loc + 5, y_loc - 30);
+    lv_obj_set_pos(ui_objects.text_v12_label, x_loc + 20, y_loc - 30);
 
     ui_objects.text_v12_current = lv_label_create(lv_screen_active());
     lv_label_set_text(ui_objects.text_v12_current, "0.00 A");
     lv_obj_set_style_text_color(ui_objects.text_v12_current, lv_palette_lighten(LV_PALETTE_GREY, 3), 0);
     lv_obj_set_style_text_font(ui_objects.text_v12_current, &lv_font_montserrat_16, 0);
-    lv_obj_set_pos(ui_objects.text_v12_current, x_loc + 5, y_loc + scale_h + 10);
+    lv_obj_set_pos(ui_objects.text_v12_current, x_loc + 15, y_loc + scale_h + 10);
 
     /* Initialize needle */
-    V33_set_needle(ui_objects.v12_needle, 12.00, scale_h, scale_w, x_loc, y_loc, 11.2, 12.8);
+    V12_set_needle(ui_objects.v12_needle, 12.0, scale_h, scale_w, x_loc, y_loc, 11.2, 12.8);
 }
 
 void ps_update_live_text_values(void)
@@ -742,19 +798,4 @@ void ps_gui(void)
     /* Create the live-updating text objects */
     //ps_create_live_text_objects();
 
-    /* Create rail_values structure and timer */
-    //ps_rail_values_t* rail_values = (ps_rail_values_t*)malloc(sizeof(ps_rail_values_t));
-    //if (rail_values != NULL) {
-    //    rail_values->v12_voltage = 0.0f;
-    //    rail_values->v12_current = 0.0f;
-    //    rail_values->v5_voltage = 0.0f;
-    //    rail_values->v5_current = 0.0f;
-    //    rail_values->v33_voltage = 0.0f;
-    //    rail_values->v33_current = 0.0f;
-    //    rail_values->ac_power = 0.0f;
-    //    rail_values->temperature = 0.0f;
-
-    //    /* Create a timer that calls ps_update_timer_callback every 500ms */
-    //    lv_timer_create(ps_update_timer_callback, 500, rail_values);
-    //}
 }
