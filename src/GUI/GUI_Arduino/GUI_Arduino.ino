@@ -6,6 +6,7 @@
 #include <ACS37800.h>
 #include <Arduino_GFX_Library.h>
 #include <DFRobot_DHT20.h>
+#include <math.h>
 #include "PowerSupply.h"
 #include "telemetry.cpp"
 
@@ -80,7 +81,9 @@ uint32_t my_tick(void) { return millis(); }
 /* ---- LVGL ---- */
 const uint32_t SCR_W = 480;
 const uint32_t SCR_H = 272;
-static lv_color_t buf1[SCR_W * 40];
+// static lv_color_t buf1[SCR_W * 40];
+static lv_color_t *buf1 = nullptr;
+static lv_color_t *buf2 = nullptr;
 
 
 /* ---- Timing ---- */
@@ -135,7 +138,18 @@ void setup() {
 
   lv_display_t *disp = lv_display_create(SCR_W, SCR_H);
   lv_display_set_flush_cb(disp, my_disp_flush);
-  lv_display_set_buffers(disp, buf1, NULL, sizeof(buf1), LV_DISPLAY_RENDER_MODE_PARTIAL);
+  
+  buf1 = (lv_color_t*)heap_caps_malloc(SCR_W * SCR_H * sizeof(lv_color_t), MALLOC_CAP_SPIRAM);
+  buf2 = (lv_color_t*)heap_caps_malloc(SCR_W * SCR_H * sizeof(lv_color_t), MALLOC_CAP_SPIRAM);
+
+  if (!buf1 || !buf2) {
+      Serial.println("PSRAM buffer allocation failed!");
+      while(1);
+  }
+
+lv_display_set_buffers(disp, buf1, buf2,
+    SCR_W * SCR_H * sizeof(lv_color_t),
+    LV_DISPLAY_RENDER_MODE_FULL);
 
   lv_indev_t *indev = lv_indev_create();
   lv_indev_set_type(indev, LV_INDEV_TYPE_POINTER);
@@ -144,6 +158,33 @@ void setup() {
 
   // Initiate GUI
   ps_gui();
+}
+
+
+void sendTestValues() {
+    static float t = 0.0f;
+    t += 0.05f;
+    if (t > TWO_PI) t -= TWO_PI;
+
+    float v12_rail_volts = 12.0f + sinf(t)        * 0.5f;
+    float v12_rail_amps  = 1.0f  + sinf(t + 0.5f) * 0.8f;
+
+    float v5_rail_volts  = 5.0f  + sinf(t + 1.0f) * 0.2f;
+    float v5_rail_amps   = 0.5f  + sinf(t + 1.5f) * 0.4f;
+
+    float v33_rail_volts = 3.3f  + sinf(t + 2.0f) * 0.1f;
+    float v33_rail_amps  = 0.3f  + sinf(t + 2.5f) * 0.2f;
+
+    float ac_watts       = 200.0f + sinf(t + 0.3f) * 80.0f;  // 120 – 280W
+    float dc_watts       = ac_watts * (0.90f + sinf(t + 1.0f) * 0.02f); // tracks AC, efficiency drifts 88–92%
+    float efficiency     = (dc_watts / ac_watts) * 100.0f;
+    float temp_c         = 35.0f + sinf(t + 1.2f) * 15.0f;
+
+    ps_set_values(v12_rail_volts, v12_rail_amps,
+                  v5_rail_volts,  v5_rail_amps,
+                  v33_rail_volts, v33_rail_amps,
+                  ac_watts,       dc_watts,
+                  efficiency,     temp_c);
 }
 
 void loop() {
@@ -156,25 +197,35 @@ void loop() {
     // DC Rail power values
     float v12_rail_volts = ina_v12.getBusVoltage_V();
     float v12_rail_amps  = getCurrent_mA(ina_v12) / 1000.0f;
+    float v12_rail_watts = ina_v12.getPower_mW() / 1000.0f;
 
     float v5_rail_volts = ina_v5.getBusVoltage_V();
     float v5_rail_amps  = getCurrent_mA(ina_v5) / 1000.0f;
+    float v5_rail_watts = ina_v12.getPower_mW() / 1000.0f;
 
     float v33_rail_volts = ina_v33.getBusVoltage_V();
-    float v33_rail_amps  = getCurrent_mA(ina_v33) / 1000.0f;   
+    float v33_rail_amps  = getCurrent_mA(ina_v33) / 1000.0f; 
+    float v33_rail_watts = ina_v12.getPower_mW() / 1000.0f;  
 
     // AC input power value
     acs.readActiveAndReactivePower();
     int32_t ac_watts = acs.activePowerMilliwatts / 1000.f;
 
+    float dc_watts = v12_rail_watts + v5_rail_watts + v33_rail_watts;
+
+    float efficiency = roundf((dc_watts / ac_watts) * 100) / 100;
+
     // Temp sensor value
     float temp_c              = dft.getTemperature(); // Add this — was missing
 
     // Push everything to the GUI
-    ps_set_values(v12_rail_volts, v12_rail_amps,
-                  v5_rail_volts,  v5_rail_amps,
-                  v33_rail_volts, v33_rail_amps,
-                  ac_watts,       temp_c);
+
+
+    // ps_set_values(v12_rail_volts, v12_rail_amps,
+    //               v5_rail_volts,  v5_rail_amps,
+    //               v33_rail_volts, v33_rail_amps,
+    //               ac_watts,       dc_watts,
+    //               efficiency,      temp_c);
 
     Serial.printf("--- 12V: %.3fV %.3fA | 5V: %.3fV %.3fA | 3.3V: %.3fV %.3fA | AC: %.2fW | Temp: %.1f°C ---\n",
                   v12_rail_volts, v12_rail_amps,
@@ -183,6 +234,9 @@ void loop() {
                   ac_watts, temp_c);
 
   }
+
+  sendTestValues();
+  
 
   lv_timer_handler();
   delay(5);

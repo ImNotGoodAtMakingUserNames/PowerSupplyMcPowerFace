@@ -50,6 +50,11 @@ typedef struct {
     lv_obj_t* text_ac_power;
     lv_obj_t* text_temperature;
 
+    /* Left side metrics */
+    lv_obj_t* text_wall_power;
+    lv_obj_t* text_system_power;
+    lv_obj_t* text_efficiency;
+
     lv_obj_t* screen;
 } ps_ui_objects_t;
 
@@ -70,6 +75,8 @@ typedef struct {
     float v33_voltage;
     float v33_current;
     float ac_power;
+    float dc_power;
+    float sys_eff;
     float temperature;
 } ps_rail_values_t;
 
@@ -81,7 +88,14 @@ static float v5_rail_current = 0.8f;
 static float v33_rail_voltage = 3.3f;
 static float v33_rail_current = 0.5f;
 static float ac_power_input = 50.0f;
+static float dc_power_output = 0.0f;
+static float sys_efficiency = 0.0f;
 static float system_temperature = 25.0f;
+
+/* Left side metrics */
+static float wall_power_input = 100.0f;
+static float system_power_output = 45.0f;
+static float efficiency_percent = 45.0f;
 
 /* Text objects for power rails */
 
@@ -688,6 +702,85 @@ void ps_update_live_text_values(void)
     lv_label_set_text(ui_objects.text_temperature, buffer);
 }
 
+static void ps_create_left_metrics(void)
+{
+    const int32_t left_margin = 0;
+    const int32_t left_width = 100;
+    const int32_t top_start = 30;
+    const int32_t metric_spacing = 20;
+
+    /* Wall Power Value (Very Large) */
+    ui_objects.text_wall_power = lv_label_create(lv_screen_active());
+    lv_label_set_text(ui_objects.text_wall_power, "500.0W");
+    lv_obj_set_style_text_font(ui_objects.text_wall_power, &lv_font_montserrat_22, 0);
+    lv_obj_set_style_text_color(ui_objects.text_wall_power, lv_palette_lighten(LV_PALETTE_GREY, 3), 0);
+    lv_obj_set_width(ui_objects.text_wall_power, left_width + 20);
+    lv_obj_set_style_text_align(ui_objects.text_wall_power, LV_TEXT_ALIGN_RIGHT, 0);
+    lv_obj_set_style_transform_scale(ui_objects.text_wall_power, 500, 0);
+    lv_obj_set_pos(ui_objects.text_wall_power, left_margin, top_start);
+
+    /* Wall Power Label */
+    lv_obj_t* text_wall_power_label = lv_label_create(lv_screen_active());
+    lv_label_set_text(text_wall_power_label, "Wall Power");
+    lv_obj_set_style_text_color(text_wall_power_label, lv_palette_lighten(LV_PALETTE_GREY, 2), 0);
+    lv_obj_set_width(text_wall_power_label, left_width);
+    lv_obj_set_style_text_align(text_wall_power_label, LV_TEXT_ALIGN_RIGHT, 0);
+    lv_obj_set_style_transform_scale(text_wall_power_label, 200, 0);
+    lv_obj_set_pos(text_wall_power_label, left_margin + 15, top_start + 46);
+
+    /* System Power Value (Very Large, same as wall power) */
+    ui_objects.text_system_power = lv_label_create(lv_screen_active());
+    lv_label_set_text(ui_objects.text_system_power, "450.0W");
+    lv_obj_set_style_text_font(ui_objects.text_wall_power, &lv_font_montserrat_22, 0);
+    lv_obj_set_style_text_color(ui_objects.text_system_power, lv_palette_lighten(LV_PALETTE_GREY, 3), 0);
+    lv_obj_set_width(ui_objects.text_system_power, left_width);
+    lv_obj_set_style_text_align(ui_objects.text_system_power, LV_TEXT_ALIGN_RIGHT, 0);
+    lv_obj_set_style_transform_scale(ui_objects.text_system_power, 490, 0);
+    lv_obj_set_pos(ui_objects.text_system_power, left_margin - 45, top_start + metric_spacing + 55);
+
+    /* System Power Label */
+    lv_obj_t* text_system_power_label = lv_label_create(lv_screen_active());
+    lv_label_set_text(text_system_power_label, "System Power");
+    lv_obj_set_style_text_color(text_system_power_label, lv_palette_lighten(LV_PALETTE_GREY, 2), 0);
+    lv_obj_set_width(text_system_power_label, left_width + 5);
+    lv_obj_set_style_text_align(text_system_power_label, LV_TEXT_ALIGN_RIGHT, 0);
+    lv_obj_set_style_transform_scale(text_system_power_label, 200, 0);
+    lv_obj_set_pos(text_system_power_label, left_margin + 30, top_start + metric_spacing + 85);
+
+    /* Efficiency Value (Slightly bigger) */
+    ui_objects.text_efficiency = lv_label_create(lv_screen_active());
+    lv_label_set_text(ui_objects.text_efficiency, "00.0%");
+    lv_obj_set_style_text_font(ui_objects.text_efficiency, &lv_font_montserrat_22, 0);
+    lv_obj_set_style_text_color(ui_objects.text_efficiency, lv_palette_lighten(LV_PALETTE_GREY, 3), 0);
+    lv_obj_set_width(ui_objects.text_efficiency, left_width);
+    lv_obj_set_style_text_align(ui_objects.text_efficiency, LV_TEXT_ALIGN_RIGHT, 0);
+    lv_obj_set_style_transform_scale(ui_objects.text_efficiency, 550, 0);
+    lv_obj_set_pos(ui_objects.text_efficiency, left_margin - 10, top_start + (metric_spacing * 2) + 100);
+
+    /* Efficiency Label */
+    lv_obj_t* text_efficiency_label = lv_label_create(lv_screen_active());
+    lv_label_set_text(text_efficiency_label, "Efficiency");
+    lv_obj_set_style_text_color(text_efficiency_label, lv_palette_lighten(LV_PALETTE_GREY, 2), 0);
+    lv_obj_set_width(text_efficiency_label, left_width);
+    lv_obj_set_style_text_align(text_efficiency_label, LV_TEXT_ALIGN_RIGHT, 0);
+    lv_obj_set_style_transform_scale(text_efficiency_label, 200, 0);
+    lv_obj_set_pos(text_efficiency_label, left_margin + 12, top_start + (metric_spacing * 2) + 145);
+}
+
+static void ps_update_left_metrics(void)
+{
+    static char buffer[32];
+
+    snprintf(buffer, sizeof(buffer), "%.2f W", ac_power_input);
+    lv_label_set_text(ui_objects.text_wall_power, buffer);
+
+    snprintf(buffer, sizeof(buffer), "%.2f W", dc_power_output);
+    lv_label_set_text(ui_objects.text_system_power, buffer);
+
+    snprintf(buffer, sizeof(buffer), "%.2f %%", sys_efficiency);
+    lv_label_set_text(ui_objects.text_efficiency, buffer);
+}
+
 /* Timer callback function for live updates */
 static void ps_update_timer_callback(lv_timer_t* timer)
 {
@@ -735,7 +828,8 @@ static void ps_create_live_text_objects(void)
 void ps_set_values(float v12v, float v12a,
     float v5v, float v5a,
     float v33v, float v33a,
-    float ac_w, float temp_c)
+    float ac_w, float dc_w,
+    float eff, float temp_c)
 {
     v12_rail_voltage = v12v;
     v12_rail_current = v12a;
@@ -744,14 +838,16 @@ void ps_set_values(float v12v, float v12a,
     v33_rail_voltage = v33v;
     v33_rail_current = v33a;
     ac_power_input = ac_w;
+    dc_power_output = dc_w;
+    sys_efficiency = eff;
     system_temperature = temp_c;
 
     /* Update all needle displays */
     ps_update_v12_needle();
     ps_update_v5_needle();
     ps_update_v33_needle();
+    ps_update_left_metrics();
 }
-
 
 void ps_gui(void)
 {
@@ -789,7 +885,7 @@ void ps_gui(void)
     ps_create_voltage_scale_v33(v33_x, y_base, scale_w, scale_h, needle_w);
 
     /* Create sys_temp_scale display */
-    //ps_create_sys_temp_scale();
+    ps_create_left_metrics();
 
     /* Create the live-updating text objects */
     //ps_create_live_text_objects();
