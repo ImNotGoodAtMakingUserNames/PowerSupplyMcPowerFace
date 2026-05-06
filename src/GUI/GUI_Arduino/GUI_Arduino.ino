@@ -8,11 +8,17 @@
 #include <DFRobot_DHT20.h>
 #include <math.h>
 #include "PowerSupply.h"
-#include "telemetry.cpp"
+// #include "telemetry.cpp"
+
+//To disable wifi/bluetooth
+#include "esp_wifi.h"
+#include "esp_bt.h"
 
 #define TFT_BL 2
 #define SDA_PIN 37
 #define SCL_PIN 38
+
+// PS_ON pin numbers declared in psu_supervisor.ino
 
 // I2C addrs
   // INA219's (DC Volt/Amp measure)
@@ -48,6 +54,25 @@ ACS37800 acs;
 
 /* ---- EMC2101 ---- */
 Adafruit_EMC2101 emc;
+
+// --- Fan Control ---
+const float FAN_START_TEMP_C  = 35.0f;  // °C at which fan turns on
+const float FAN_BASE_DUTY     = 50.0f;  // % duty cycle at start temp
+const float FAN_DUTY_PER_DEG  = 5.0f;  // % added per °C above start temp
+const float FAN_MAX_DUTY      = 100.0f;
+
+void updateFanSpeed(float temp_c) {
+  float duty;
+  if (temp_c < FAN_START_TEMP_C) {
+    duty = 0.0f;  // Fan off below threshold
+  } else {
+    float overage = temp_c - FAN_START_TEMP_C;
+    duty = FAN_BASE_DUTY + (overage * FAN_DUTY_PER_DEG);
+    duty = min(duty, FAN_MAX_DUTY);
+  }
+  emc.setDutyCycle((uint8_t)duty);
+}
+
 
 /* ---- DHT20 ---- */
 DFRobot_DHT20 dft;
@@ -91,6 +116,11 @@ static unsigned long lastSensorRead = 0;
 const unsigned long SENSOR_INTERVAL_MS = 500;
 
 void setup() {
+
+  esp_wifi_stop();
+  esp_wifi_deinit();
+  esp_bt_controller_disable();
+
   // Serial Viewer
   Serial.begin(115200);
   delay(500);
@@ -115,6 +145,10 @@ void setup() {
   ina_v12.setCalibration_32V_1A();
   ina_v5.setCalibration_32V_1A();
   ina_v33.setCalibration_32V_1A();
+
+  supervisor_setup();
+  fault_log_init();
+  fault_log_print_saved();   
 
   // ACS setup
   acs.setBoardPololu(4); //4k-ohm test res for 120V RMS
@@ -147,9 +181,9 @@ void setup() {
       while(1);
   }
 
-lv_display_set_buffers(disp, buf1, buf2,
-    SCR_W * SCR_H * sizeof(lv_color_t),
-    LV_DISPLAY_RENDER_MODE_FULL);
+  lv_display_set_buffers(disp, buf1, buf2,
+  SCR_W * SCR_H * sizeof(lv_color_t),
+  LV_DISPLAY_RENDER_MODE_FULL);
 
   lv_indev_t *indev = lv_indev_create();
   lv_indev_set_type(indev, LV_INDEV_TYPE_POINTER);
@@ -187,6 +221,8 @@ void sendTestValues() {
                   efficiency,     temp_c);
 }
 
+
+
 void loop() {
   unsigned long now = millis();
 
@@ -205,7 +241,7 @@ void loop() {
 
     float v33_rail_volts = ina_v33.getBusVoltage_V();
     float v33_rail_amps  = getCurrent_mA(ina_v33) / 1000.0f; 
-    float v33_rail_watts = ina_v12.getPower_mW() / 1000.0f;  
+    float v33_rail_watts = ina_v33.getPower_mW() / 1000.0f;  
 
     // AC input power value
     acs.readActiveAndReactivePower();
@@ -216,16 +252,24 @@ void loop() {
     float efficiency = roundf((dc_watts / ac_watts) * 100) / 100;
 
     // Temp sensor value
-    float temp_c              = dft.getTemperature(); // Add this — was missing
-
+    float temp_c              =  dft.getTemperature(); 
+    if (temp_c >= 149.9) temp_c = NAN;
+    //(temperatureRead() - 32) / 1.8;
+    // updateFanSpeed(temp_c); 
     // Push everything to the GUI
 
 
-    // ps_set_values(v12_rail_volts, v12_rail_amps,
-    //               v5_rail_volts,  v5_rail_amps,
-    //               v33_rail_volts, v33_rail_amps,
-    //               ac_watts,       dc_watts,
-    //               efficiency,      temp_c);
+    ps_set_values(v12_rail_volts, v12_rail_amps,
+                  v5_rail_volts,  v5_rail_amps,
+                  v33_rail_volts, v33_rail_amps,
+                  ac_watts,       dc_watts,
+                  efficiency,      temp_c);
+
+    fault_log_record(v12_rail_volts, v12_rail_amps,
+                    v5_rail_volts,  v5_rail_amps,
+                    v33_rail_volts, v33_rail_amps,
+                    ac_watts,       dc_watts,
+                    efficiency,     temp_c);
 
     Serial.printf("--- 12V: %.3fV %.3fA | 5V: %.3fV %.3fA | 3.3V: %.3fV %.3fA | AC: %.2fW | Temp: %.1f°C ---\n",
                   v12_rail_volts, v12_rail_amps,
@@ -235,9 +279,12 @@ void loop() {
 
   }
 
-  sendTestValues();
+  // sendTestValues();
   
+  supervisor_update();   // reads rails, sets s_powerBad
+  sequencer_update();    // acts on s_powerBad, drives PSU_EN_OUT 
 
+  supervisor_test_run();
   lv_timer_handler();
   delay(5);
 }

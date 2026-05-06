@@ -55,6 +55,10 @@ typedef struct {
     lv_obj_t* text_system_power;
     lv_obj_t* text_efficiency;
 
+    /* Status indicator circle */
+    lv_obj_t* status_circle;
+    bool circle_is_red;
+
     lv_obj_t* screen;
 } ps_ui_objects_t;
 
@@ -106,6 +110,29 @@ typedef struct {
     int32_t x_offset;
     int32_t scale_spacing;
 } ps_voltage_scale_config_t;
+
+static void ps_toggle_status_circle(void)
+{
+    if (ui_objects.status_circle) {
+        if (ui_objects.circle_is_red) {
+            lv_obj_set_style_bg_color(ui_objects.status_circle, lv_palette_main(LV_PALETTE_BLUE), LV_PART_MAIN);
+        } else {
+            lv_obj_set_style_bg_color(ui_objects.status_circle, lv_palette_main(LV_PALETTE_RED), LV_PART_MAIN);
+        }
+        ui_objects.circle_is_red = !ui_objects.circle_is_red;
+    }
+}
+
+static void ps_create_status_circle(void)
+{
+    ui_objects.status_circle = lv_obj_create(lv_screen_active());
+    lv_obj_set_size(ui_objects.status_circle, 20, 20);
+    lv_obj_set_style_radius(ui_objects.status_circle, LV_RADIUS_CIRCLE, LV_PART_MAIN);
+    lv_obj_set_style_bg_color(ui_objects.status_circle, lv_palette_main(LV_PALETTE_RED), LV_PART_MAIN);
+    lv_obj_set_style_border_width(ui_objects.status_circle, 0, LV_PART_MAIN);
+    lv_obj_set_pos(ui_objects.status_circle, 10, 10);
+    ui_objects.circle_is_red = true;
+}
 
 static void ps_create_sys_temp_scale(void)
 {
@@ -743,6 +770,25 @@ static void ps_create_left_metrics(void)
     lv_obj_set_style_transform_scale(text_system_power_label, 200, 0);
     lv_obj_set_pos(text_system_power_label, left_margin - 5, top_start + metric_spacing + 85);
 
+    /* Temperature Value (Bottom Left) */
+    ui_objects.text_temperature = lv_label_create(lv_screen_active());
+    lv_label_set_text(ui_objects.text_temperature, "25.0 °C");
+    lv_obj_set_style_text_font(ui_objects.text_temperature, &lv_font_montserrat_20, 0);
+    lv_obj_set_style_text_color(ui_objects.text_temperature, lv_palette_lighten(LV_PALETTE_GREY, 3), 0);
+    lv_obj_set_width(ui_objects.text_temperature, left_width);
+    lv_obj_set_style_text_align(ui_objects.text_temperature, LV_TEXT_ALIGN_RIGHT, 0);
+    lv_obj_set_style_transform_scale(ui_objects.text_temperature, 400, 0);
+    lv_obj_set_pos(ui_objects.text_temperature, left_margin, VERT_RES - 60);
+
+    /* Temperature Label */
+    lv_obj_t* text_temperature_label = lv_label_create(lv_screen_active());
+    lv_label_set_text(text_temperature_label, "Temperature");
+    lv_obj_set_style_text_color(text_temperature_label, lv_palette_lighten(LV_PALETTE_GREY, 2), 0);
+    lv_obj_set_width(text_temperature_label, left_width);
+    lv_obj_set_style_text_align(text_temperature_label, LV_TEXT_ALIGN_RIGHT, 0);
+    lv_obj_set_style_transform_scale(text_temperature_label, 180, 0);
+    lv_obj_set_pos(text_temperature_label, left_margin + 10, VERT_RES - 25);
+
     ///* Efficiency Value (Slightly bigger) */
     //ui_objects.text_efficiency = lv_label_create(lv_screen_active());
     //lv_label_set_text(ui_objects.text_efficiency, "0.00 %");
@@ -778,6 +824,10 @@ static void ps_update_left_metrics(void)
     snprintf(buffer, sizeof(buffer), "%.2f W", system_power_output);
     lv_label_set_text(ui_objects.text_system_power, buffer);
 
+    /* Update Temperature */
+    snprintf(buffer, sizeof(buffer), "%.1f °C", system_temperature);
+    lv_label_set_text(ui_objects.text_temperature, buffer);
+
     /* Update Efficiency */
     snprintf(buffer, sizeof(buffer), "%.2f %%", efficiency_percent);
     lv_label_set_text(ui_objects.text_efficiency, buffer);
@@ -787,6 +837,7 @@ static void ps_update_left_metrics(void)
 static void ps_update_timer_callback(lv_timer_t* timer)
 {
     ps_update_live_text_values();
+    ps_update_left_metrics();
 }
 
 static void ps_create_live_text_objects(void)
@@ -845,6 +896,9 @@ void ps_set_values(float v12v, float v12a,
     ps_update_v12_needle();
     ps_update_v5_needle();
     ps_update_v33_needle();
+
+    /* Toggle status circle */
+    ps_toggle_status_circle();
 }
 
 void ps_set_left_metrics(float wall_power, float system_power, float efficiency)
@@ -862,6 +916,9 @@ void ps_gui(void)
 {
     /* Main Screen */
     lv_obj_set_style_bg_color(lv_screen_active(), lv_color_hex(0x000000), 0);
+
+    /* Create status circle in top left */
+    ps_create_status_circle();
 
     /* Scale dimensions and spacing */
     const int32_t scale_w = 60;

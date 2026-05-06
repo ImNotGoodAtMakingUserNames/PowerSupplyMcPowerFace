@@ -7,6 +7,19 @@
 extern "C" {
 #endif
 
+const char* supervisor_last_fault();
+
+extern bool sup_fault_12v_uv, sup_fault_12v_ov, sup_fault_12v_oc;
+extern bool sup_fault_5v_uv,  sup_fault_5v_ov,  sup_fault_5v_oc;
+extern bool sup_fault_3v3_uv, sup_fault_3v3_ov, sup_fault_3v3_oc;
+
+typedef enum {
+    PSU_STATE_STANDBY,
+    PSU_STATE_ENABLING,
+    PSU_STATE_RUNNING,
+    PSU_STATE_FAULT,
+} psu_state_t;
+
 void ps_gui(void);
 extern lv_obj_t* live_update_text;
 void ps_set_values(float v12v, float v12a,
