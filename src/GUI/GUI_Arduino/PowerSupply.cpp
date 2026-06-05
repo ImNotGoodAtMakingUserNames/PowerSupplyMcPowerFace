@@ -87,21 +87,21 @@ typedef struct {
 } ps_rail_values_t;
 
 /* Global variables for power rail values */
-static float v12_rail_voltage = 12.0f;
-static float v12_rail_current = 1.5f;
-static float v5_rail_voltage = 5.0f;
-static float v5_rail_current = 0.8f;
-static float v33_rail_voltage = 3.3f;
-static float v33_rail_current = 0.5f;
-static float ac_power_input = 50.0f;
+static float v12_rail_voltage = 0.0f;
+static float v12_rail_current = 0.0f;
+static float v5_rail_voltage = 0.0f;
+static float v5_rail_current = 0.0f;
+static float v33_rail_voltage = 0.0f;
+static float v33_rail_current = 0.0f;
+static float ac_power_input = 0.0f;
 static float dc_power_output = 0.0f;
 static float sys_efficiency = 0.0f;
-static float system_temperature = 25.0f;
+static float system_temperature = 0.0f;
 
 /* Left side metrics */
-static float wall_power_input = 100.0f;
-static float system_power_output = 45.0f;
-static float efficiency_percent = 45.0f;
+static float wall_power_input = 0.0f;
+static float system_power_output = 0.0f;
+static float efficiency_percent = 0.0f;
 
 /* Text objects for power rails */
 
@@ -812,11 +812,12 @@ static void ps_create_left_metrics(void)
     /* Last Fault Label */
     ui_objects.text_last_fault = lv_label_create(lv_screen_active());
     lv_label_set_text(ui_objects.text_last_fault, "Last: None");
-    lv_obj_set_style_text_font(ui_objects.text_last_fault, &lv_font_montserrat_14, 0);
+    lv_obj_set_style_text_font(ui_objects.text_last_fault, &lv_font_montserrat_20, 0);
     lv_obj_set_style_text_color(ui_objects.text_last_fault, lv_palette_main(LV_PALETTE_RED), 0);
-    lv_obj_set_width(ui_objects.text_last_fault, left_width);
+    lv_obj_set_width(ui_objects.text_last_fault, left_width + 30);
     lv_obj_set_style_text_align(ui_objects.text_last_fault, LV_TEXT_ALIGN_RIGHT, 0);
-    lv_obj_set_pos(ui_objects.text_last_fault, left_margin - 5, VERT_RES - 30);
+    lv_obj_set_style_transform_scale(ui_objects.text_last_fault, 200, 0);
+    lv_obj_set_pos(ui_objects.text_last_fault, left_margin + 150, VERT_RES - 30);
 
 
 }
@@ -896,23 +897,25 @@ void ps_set_values(float v12v, float v12a,
     float ac_w, float dc_w,
     float eff, float temp_c)
 {
-    v12_rail_voltage = v12v;
-    v12_rail_current = v12a;
-    v5_rail_voltage = v5v;
-    v5_rail_current = v5a;
-    v33_rail_voltage = v33v;
-    v33_rail_current = v33a;
-    ac_power_input = ac_w;
-    dc_power_output = dc_w;
-    sys_efficiency = eff;
-    system_temperature = temp_c;
+    /* Only update stored values if the incoming reading is valid.
+       Invalid readings leave the last good value in place ("freeze"). */
+    if (!isnan(v12v))  v12_rail_voltage    = v12v;
+    if (!isnan(v12a))  v12_rail_current    = v12a;
+    if (!isnan(v5v))   v5_rail_voltage     = v5v;
+    if (!isnan(v5a))   v5_rail_current     = v5a;
+    if (!isnan(v33v))  v33_rail_voltage    = v33v;
+    if (!isnan(v33a))  v33_rail_current    = v33a;
+    if (!isnan(ac_w))  ac_power_input      = ac_w;
+    if (!isnan(dc_w))  dc_power_output     = dc_w;
+    if (!isnan(eff))   sys_efficiency      = eff;
+    if (!isnan(temp_c)) system_temperature = temp_c;
 
     /* Update all needle displays */
     ps_update_v12_needle();
     ps_update_v5_needle();
     ps_update_v33_needle();
     ps_update_left_metrics();
-    
+
     /* Toggle status circle */
     ps_toggle_status_circle();
 }

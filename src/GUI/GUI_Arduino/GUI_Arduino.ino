@@ -56,15 +56,16 @@ ACS37800 acs;
 Adafruit_EMC2101 emc;
 
 // --- Fan Control ---
-const float FAN_START_TEMP_C  = 35.0f;  // °C at which fan turns on
+const float FAN_START_TEMP_C  = 75.0f;  // °C at which fan turns on
 const float FAN_BASE_DUTY     = 50.0f;  // % duty cycle at start temp
 const float FAN_DUTY_PER_DEG  = 5.0f;  // % added per °C above start temp
 const float FAN_MAX_DUTY      = 100.0f;
 
 void updateFanSpeed(float temp_c) {
+  if (isnan(temp_c)) return;  // <-- sensor fault, don't change fan state
   float duty;
   if (temp_c < FAN_START_TEMP_C) {
-    duty = 0.0f;  // Fan off below threshold
+    duty = 0.0f;
   } else {
     float overage = temp_c - FAN_START_TEMP_C;
     duty = FAN_BASE_DUTY + (overage * FAN_DUTY_PER_DEG);
@@ -157,7 +158,7 @@ void setup() {
   // EMC setup
   emc.enableTachInput(true);
   emc.setPWMDivisor(0);
-  emc.setDutyCycle(50);
+  emc.setDutyCycle(0);
 
 
   // Display & GUI
@@ -221,6 +222,18 @@ void sendTestValues() {
                   efficiency,     temp_c);
 }
 
+static inline float safe_div(float num, float den, float fallback = 0.0f) {
+  if (isnan(num) || isnan(den) || fabsf(den) < 1e-6f) return fallback;
+  float r = num / den;
+  return (isinf(r) || isnan(r)) ? fallback : r;
+}
+
+// Clamp a reading: if outside [lo, hi] return NAN
+static inline float clamp_or_nan(float v, float lo, float hi) {
+  if (isnan(v) || v < lo || v > hi) return NAN;
+  return v;
+}
+
 
 
 void loop() {
@@ -231,31 +244,42 @@ void loop() {
     lastSensorRead = now;
 
     // DC Rail power values
-    float v12_rail_volts = ina_v12.getBusVoltage_V();
-    float v12_rail_amps  = getCurrent_mA(ina_v12) / 1000.0f;
-    float v12_rail_watts = ina_v12.getPower_mW() / 1000.0f;
+    float v12_rail_volts = clamp_or_nan(ina_v12.getBusVoltage_V(),   0.0f, 20.0f);
+    float v12_rail_amps  = clamp_or_nan(getCurrent_mA(ina_v12) / 1000.0f, -0.05f, 20.0f);
 
-    float v5_rail_volts = ina_v5.getBusVoltage_V();
-    float v5_rail_amps  = getCurrent_mA(ina_v5) / 1000.0f;
-    float v5_rail_watts = ina_v12.getPower_mW() / 1000.0f;
+    float v5_rail_volts  = clamp_or_nan(ina_v5.getBusVoltage_V(),    0.0f, 10.0f);
+    float v5_rail_amps   = clamp_or_nan(getCurrent_mA(ina_v5)  / 1000.0f, -0.05f, 20.0f);
 
-    float v33_rail_volts = ina_v33.getBusVoltage_V();
-    float v33_rail_amps  = getCurrent_mA(ina_v33) / 1000.0f; 
-    float v33_rail_watts = ina_v33.getPower_mW() / 1000.0f;  
+    float v33_rail_volts = clamp_or_nan(ina_v33.getBusVoltage_V(),   0.0f,  6.0f);
+    float v33_rail_amps  = clamp_or_nan(getCurrent_mA(ina_v33) / 1000.0f, -0.05f, 10.0f);
 
-    // AC input power value
+    // Watts: NaN propagates naturally if either operand is NaN
+    float v12_rail_watts = v12_rail_volts * v12_rail_amps;
+    float v5_rail_watts  = v5_rail_volts  * v5_rail_amps;
+    float v33_rail_watts = v33_rail_volts * v33_rail_amps;
+
+    // ---- AC input ----
     acs.readActiveAndReactivePower();
-    int32_t ac_watts = acs.activePowerMilliwatts / 1000.f;
+    // ACS37800 can return small negatives on light loads; treat < 0 as 0
+    float ac_watts = fmaxf(0.0f, acs.activePowerMilliwatts / 1000.0f);
+    ac_watts = clamp_or_nan(ac_watts, 0.0f, 5000.0f);  // sanity ceiling
 
-    float dc_watts = v12_rail_watts + v5_rail_watts + v33_rail_watts;
+    // ---- DC total & efficiency ----
+    float dc_watts = 0.0f;
+    // Only sum rails that have valid readings
+    if (!isnan(v12_rail_watts)) dc_watts += v12_rail_watts;
+    if (!isnan(v5_rail_watts))  dc_watts += v5_rail_watts;
+    if (!isnan(v33_rail_watts)) dc_watts += v33_rail_watts;
 
-    float efficiency = roundf((dc_watts / ac_watts) * 100) / 100;
+    // safe_div returns 0 (not NaN/Inf) when ac_watts is 0 or invalid
+    float efficiency = safe_div(dc_watts, ac_watts, 0.0f) * 100.0f;
+    efficiency = clamp_or_nan(efficiency, 0.0f, 120.0f); // >100% = bad sensor data
 
-    // Temp sensor value
-    float temp_c              =  dft.getTemperature(); 
-    if (temp_c >= 149.9) temp_c = NAN;
-    //(temperatureRead() - 32) / 1.8;
-    // updateFanSpeed(temp_c); 
+    // ---- Temperature ----
+    float temp_c = dft.getTemperature();
+    // DHT20 error codes: 255 (0xFF), sometimes -40 on cold-start glitch
+    temp_c = clamp_or_nan(temp_c, -10.0f, 120.0f);
+    updateFanSpeed(temp_c);  // already guards isnan — safe
     // Push everything to the GUI
 
 

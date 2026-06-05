@@ -39,15 +39,15 @@
 #define PSU_EN_OUT  18          // OUTPUT — inverter enable (HIGH = run, LOW = shutdown)
 
 // ── Rail thresholds (volts) ───────────────────────────────────────────────────
-#define UV_12V   10.56f
-#define OV_12V   13.20f
-#define UV_5V     4.55f
-#define OV_5V     5.50f
-#define UV_3V3    2.93f
-#define OV_3V3    3.63f
+#define UV_12V   11.40f
+#define OV_12V   12.60f
+#define UV_5V     4.75f
+#define OV_5V     5.25f
+#define UV_3V3    3.135f
+#define OV_3V3    3.465f
 
 // ── Overcurrent limits (amps) ─────────────────────────────────────────────────
-#define OC_12V   10.0f
+#define OC_12V   8.0f
 #define OC_5V    20.0f
 #define OC_3V3   20.0f
 
