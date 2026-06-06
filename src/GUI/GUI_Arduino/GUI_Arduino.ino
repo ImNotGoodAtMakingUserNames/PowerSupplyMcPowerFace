@@ -107,14 +107,13 @@ uint32_t my_tick(void) { return millis(); }
 /* ---- LVGL ---- */
 const uint32_t SCR_W = 480;
 const uint32_t SCR_H = 272;
-// static lv_color_t buf1[SCR_W * 40];
 static lv_color_t *buf1 = nullptr;
 static lv_color_t *buf2 = nullptr;
 
 
 /* ---- Timing ---- */
 static unsigned long lastSensorRead = 0;
-const unsigned long SENSOR_INTERVAL_MS = 500;
+const unsigned long SENSOR_INTERVAL_MS = 700;  // 700 ms refresh
 
 void setup() {
 
@@ -189,37 +188,46 @@ void setup() {
   lv_indev_t *indev = lv_indev_create();
   lv_indev_set_type(indev, LV_INDEV_TYPE_POINTER);
 
-
-
   // Initiate GUI
   ps_gui();
 }
 
 
+// ---------------------------------------------------------------
+// Test value generator
+//   12V rail: 11.76 – 12.24  (±2% of 12.0)
+//    5V rail:  4.90 –  5.10  (±2% of 5.0)
+//  3.3V rail:  3.234 – 3.366 (±2% of 3.3)
+// ---------------------------------------------------------------
 void sendTestValues() {
-    static float t = 0.0f;
-    t += 0.05f;
-    if (t > TWO_PI) t -= TWO_PI;
+  static float t = 0.0f;
+  t += 0.12f;                       // step size controls how fast values drift
+  if (t > TWO_PI) t -= TWO_PI;
 
-    float v12_rail_volts = 12.0f + sinf(t)        * 0.5f;
-    float v12_rail_amps  = 1.0f  + sinf(t + 0.5f) * 0.8f;
+  // ±2% amplitude around nominal
+  const float V12_NOM  = 12.0f,  V12_TOL  = V12_NOM  * 0.02f;  // ±0.24 V
+  const float V5_NOM   =  5.0f,  V5_TOL   = V5_NOM   * 0.02f;  // ±0.10 V
+  const float V33_NOM  =  3.3f,  V33_TOL  = V33_NOM  * 0.02f;  // ±0.066 V
 
-    float v5_rail_volts  = 5.0f  + sinf(t + 1.0f) * 0.2f;
-    float v5_rail_amps   = 0.5f  + sinf(t + 1.5f) * 0.4f;
+  float v12_rail_volts = V12_NOM  + sinf(t)         * V12_TOL;
+  float v12_rail_amps  = 1.0f     + sinf(t + 0.5f)  * 0.5f;
 
-    float v33_rail_volts = 3.3f  + sinf(t + 2.0f) * 0.1f;
-    float v33_rail_amps  = 0.3f  + sinf(t + 2.5f) * 0.2f;
+  float v5_rail_volts  = V5_NOM   + sinf(t + 1.0f)  * V5_TOL;
+  float v5_rail_amps   = 0.5f     + sinf(t + 1.5f)  * 0.3f;
 
-    float ac_watts       = 200.0f + sinf(t + 0.3f) * 80.0f;  // 120 – 280W
-    float dc_watts       = ac_watts * (0.90f + sinf(t + 1.0f) * 0.02f); // tracks AC, efficiency drifts 88–92%
-    float efficiency     = (dc_watts / ac_watts) * 100.0f;
-    float temp_c         = 35.0f + sinf(t + 1.2f) * 15.0f;
+  float v33_rail_volts = V33_NOM  + sinf(t + 2.0f)  * V33_TOL;
+  float v33_rail_amps  = 0.3f     + sinf(t + 2.5f)  * 0.15f;
 
-    ps_set_values(v12_rail_volts, v12_rail_amps,
-                  v5_rail_volts,  v5_rail_amps,
-                  v33_rail_volts, v33_rail_amps,
-                  ac_watts,       dc_watts,
-                  efficiency,     temp_c);
+  float ac_watts       = 200.0f   + sinf(t + 0.3f)  * 50.0f;
+  float dc_watts       = ac_watts * (0.90f + sinf(t + 1.0f) * 0.02f);
+  float efficiency     = (dc_watts / ac_watts) * 100.0f;
+  float temp_c         = 40.0f    + sinf(t + 1.2f)  * 10.0f;
+
+  ps_set_values(v12_rail_volts, v12_rail_amps,
+                v5_rail_volts,  v5_rail_amps,
+                v33_rail_volts, v33_rail_amps,
+                ac_watts,       dc_watts,
+                efficiency,     temp_c);
 }
 
 static inline float safe_div(float num, float den, float fallback = 0.0f) {
@@ -239,11 +247,13 @@ static inline float clamp_or_nan(float v, float lo, float hi) {
 void loop() {
   unsigned long now = millis();
 
-  // 
   if (now - lastSensorRead >= SENSOR_INTERVAL_MS) {
     lastSensorRead = now;
 
-    // DC Rail power values
+    sendTestValues();   // <-- test mode active; comment out & uncomment below for live sensors
+
+    // ---- LIVE SENSOR BLOCK (disabled while testing) ----
+    /*
     float v12_rail_volts = clamp_or_nan(ina_v12.getBusVoltage_V(),   0.0f, 20.0f);
     float v12_rail_amps  = clamp_or_nan(getCurrent_mA(ina_v12) / 1000.0f, -0.05f, 20.0f);
 
@@ -253,35 +263,25 @@ void loop() {
     float v33_rail_volts = clamp_or_nan(ina_v33.getBusVoltage_V(),   0.0f,  6.0f);
     float v33_rail_amps  = clamp_or_nan(getCurrent_mA(ina_v33) / 1000.0f, -0.05f, 10.0f);
 
-    // Watts: NaN propagates naturally if either operand is NaN
     float v12_rail_watts = v12_rail_volts * v12_rail_amps;
     float v5_rail_watts  = v5_rail_volts  * v5_rail_amps;
     float v33_rail_watts = v33_rail_volts * v33_rail_amps;
 
-    // ---- AC input ----
     acs.readActiveAndReactivePower();
-    // ACS37800 can return small negatives on light loads; treat < 0 as 0
     float ac_watts = fmaxf(0.0f, acs.activePowerMilliwatts / 1000.0f);
-    ac_watts = clamp_or_nan(ac_watts, 0.0f, 5000.0f);  // sanity ceiling
+    ac_watts = clamp_or_nan(ac_watts, 0.0f, 5000.0f);
 
-    // ---- DC total & efficiency ----
     float dc_watts = 0.0f;
-    // Only sum rails that have valid readings
     if (!isnan(v12_rail_watts)) dc_watts += v12_rail_watts;
     if (!isnan(v5_rail_watts))  dc_watts += v5_rail_watts;
     if (!isnan(v33_rail_watts)) dc_watts += v33_rail_watts;
 
-    // safe_div returns 0 (not NaN/Inf) when ac_watts is 0 or invalid
     float efficiency = safe_div(dc_watts, ac_watts, 0.0f) * 100.0f;
-    efficiency = clamp_or_nan(efficiency, 0.0f, 120.0f); // >100% = bad sensor data
+    efficiency = clamp_or_nan(efficiency, 0.0f, 120.0f);
 
-    // ---- Temperature ----
     float temp_c = dft.getTemperature();
-    // DHT20 error codes: 255 (0xFF), sometimes -40 on cold-start glitch
     temp_c = clamp_or_nan(temp_c, -10.0f, 120.0f);
-    updateFanSpeed(temp_c);  // already guards isnan — safe
-    // Push everything to the GUI
-
+    updateFanSpeed(temp_c);
 
     ps_set_values(v12_rail_volts, v12_rail_amps,
                   v5_rail_volts,  v5_rail_amps,
@@ -300,14 +300,12 @@ void loop() {
                   v5_rail_volts,  v5_rail_amps,
                   v33_rail_volts, v33_rail_amps,
                   ac_watts, temp_c);
-
+    */
+    // ---- END LIVE SENSOR BLOCK ----
   }
 
-  // sendTestValues();
-  
-  supervisor_update();   // reads rails, sets s_powerBad
-  sequencer_update();    // acts on s_powerBad, drives PSU_EN_OUT 
-
+  supervisor_update();
+  sequencer_update();
   supervisor_test_run();
   lv_timer_handler();
   delay(5);
